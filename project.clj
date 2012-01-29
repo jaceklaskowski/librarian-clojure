@@ -1,5 +1,6 @@
 ;; http://corfield.org/blog/post.cfm/testing-your-project-against-multiple-versions-of-clojure
-(def common-deps '[[ring/ring-jetty-adapter "1.0.1"]])
+(def common-deps '[[ring/ring-jetty-adapter "1.0.1"]
+                   [ring/ring-devel "1.0.1"]])
 
 (defproject librarian-clojure "0.0.1-SNAPSHOT"
   :description "Book manager in Clojure"
