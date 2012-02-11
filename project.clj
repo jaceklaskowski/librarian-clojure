@@ -3,7 +3,7 @@
                    [ring/ring-devel "1.0.1"]
                    [compojure "0.6.4"]
                    [hiccup "0.3.8"]
-				           [org.mongodb/mongo-java-driver "2.6.5"]
+                   [org.mongodb/mongo-java-driver "2.6.5"]
                    [congomongo "0.1.7"]])
 
 (defproject librarian-clojure "0.0.1-SNAPSHOT"
