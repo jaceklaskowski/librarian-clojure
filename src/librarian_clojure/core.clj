@@ -1,4 +1,5 @@
 (ns librarian-clojure.core
+  "Provides a -main function which will start the application"
   (:use ring.adapter.jetty
         ring.handler.dump
         librarian-clojure.books)
@@ -7,11 +8,20 @@
     [compojure.route :as route]
     [compojure.handler :as handler]))
 
+(defn gen-resp [uri-name]
+  (println uri-name "REST handler")
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (str "Welcome to " uri-name " Manager")})
+
 (defn hello-world [app]
   (fn [req]
-    {:status 200
-     :headers {"Content-Type" "text/html"}
-     :body "Hello, world"}))
+    (println req)
+    (let [uri (:uri req)
+          books? (.startsWith uri "/books")]
+      (if books?
+        (gen-resp :books)
+        (gen-resp :unknown)))))
 
 (defn upper-case [app]
   (fn [req]
