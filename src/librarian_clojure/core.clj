@@ -47,5 +47,6 @@
 (def app
   (handler/site routes))
 
-(defn -main [port]
-  (run-jetty app {:port (Integer. port)}))
+(defn -main
+  ;([] (-main 9999))
+  ([port] (run-jetty app {:port (Integer. port)})))

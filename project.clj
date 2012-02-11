@@ -19,4 +19,5 @@
   :dev-dependencies [[lein-multi "1.1.0-SNAPSHOT"]
                      [lein-ring "0.5.4"]
                      [lein-eclipse "1.0.0"]]
-  :ring {:handler librarian-clojure.core/app})
+  :ring {:handler librarian-clojure.core/app}
+  :main librarian-clojure.core)
