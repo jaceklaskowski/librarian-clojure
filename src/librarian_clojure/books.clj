@@ -28,7 +28,7 @@
 ;;;;;; View/logic
 
 (defn render-row [cells]
-  [:tr (map (fn [_] [:td _]) cells)])
+  [:tr (map (fn [v] [:td v]) cells)])
 
 (defn prepare-row [book]
   [(:author book) 
