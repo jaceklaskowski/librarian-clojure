@@ -1,9 +1,9 @@
 (ns librarian-clojure.core
   "Provides a -main function which will start the application"
-  (:use ring.adapter.jetty
-        ring.handler.dump
-        librarian-clojure.books)
   (:require
+    [librarian-clojure.books :as librarian-books]
+    [ring.adapter.jetty :as jetty]
+    [ring.handler.dump :as dump]
     [compojure.core :as compojure]
     [compojure.route :as route]
     [compojure.handler :as handler]))
@@ -23,30 +23,22 @@
         (gen-resp :books)
         (gen-resp :unknown)))))
 
-(defn upper-case [app]
-  (fn [req]
-    (let [resp (app req)
-          body (:body resp)
-          upper-case-body (.toUpperCase body)]
-      (conj resp {:body upper-case-body}))))
-  
 (def hello-world-app
-  (-> handle-dump
-    hello-world
-    upper-case))
+  (-> dump/handle-dump
+    hello-world))
 
 (compojure/defroutes routes
   (compojure/ANY "/" [] hello-world-app)
-  (compojure/GET "/books" [] (get-books))
-  (compojure/POST "/books" [id author title] (post-books id author title))
-  (compojure/GET "/books/delete" [id] (delete-book id))
-  (compojure/GET "/books/edit" [id] (edit-book id))
+  (compojure/GET "/books" [] (librarian-books/get-books))
+  (compojure/POST "/books" [id author title] (librarian-books/post-books id author title))
+  (compojure/GET "/books/delete" [id] (librarian-books/delete-book id))
+  (compojure/GET "/books/edit" [id] (librarian-books/edit-book id))
   (route/resources "/")
   (route/not-found "Page not found"))
 
 (def app
   (handler/site routes))
 
-(defn -main
-  ([] (-main 9999))
-  ([port] (run-jetty app {:port (Integer. port)})))
+(defn -main []
+  (let [port (Integer/parseInt (get (System/getenv) "PORT" "8080"))]
+    (jetty/run-jetty app {:port port})))
