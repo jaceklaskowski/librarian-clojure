@@ -1,7 +1,7 @@
 ;; http://corfield.org/blog/post.cfm/testing-your-project-against-multiple-versions-of-clojure
 (def common-deps '[[ring/ring-jetty-adapter "1.0.1"]
                    [ring/ring-devel "1.0.1"]
-                   [compojure "0.6.4"]
+                   [compojure "1.0.1"]
                    [hiccup "0.3.8"]
                    [org.mongodb/mongo-java-driver "2.6.5"]
                    [congomongo "0.1.7"]])

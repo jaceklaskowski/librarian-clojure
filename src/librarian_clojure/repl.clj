@@ -6,6 +6,8 @@
   (:require [clojure.java.browse :as browse]
             [librarian-clojure.core :as core]))
 
+(def ^:dynamic *server*)
+
 (defn go
   "Start a browser-connected REPL and launch a browser to talk to it."
   []
@@ -13,9 +15,18 @@
   (dev/run-server)
   (future (Thread/sleep 3000)
           (browse/browse-url "http://localhost:8080/development"))
-  (tools/cljs-repl)))
+  (tools/cljs-repl))
+  ;;
+  (let [port (Integer/parseInt (get (System/getenv) "PORT" "8080"))]
+    (def *server* (core/-main))
+    (browse/browse-url (str "http://localhost:" port))))
+
+(defn stop
+  "Stop the server"
+  []
+  (.stop *server*))
 
 (println)
-(println "Type (go) to launch the development server and setup a browser-connected REPL.")
-(println "Type (dev-server) to launch only the development server.")
+(println "Type (go) to launch the server and run a browser.")
+(println "Type (stop) to stop the server.")
 (println)
