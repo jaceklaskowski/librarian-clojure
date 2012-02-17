@@ -65,10 +65,14 @@
                     [:p (form/submit-button "Update")]))))
 
 (defn get-books []
-  (hiccup-helpers/html4
-    (render-books "Books in Database" (db-get-books))
-    (render-book-form)))
-
+  (try
+    (hiccup-helpers/html4
+      (render-books "Books in Database" (db-get-books))
+      (render-book-form))
+    (catch com.mongodb.MongoException$Network e
+        (hiccup/html
+          [:h1 "MongoDB not configured"]))))
+  
 (defn post-books [id author title]
   (do
     (let [book {:author author :title title}]
