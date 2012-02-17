@@ -4,7 +4,8 @@
         [compojure.route :only (resources)]
         [ring.adapter.jetty :only (run-jetty)]
         [ring.util.response :only (redirect)]
-        librarian-clojure.books))
+        librarian-clojure.books
+        [compojure.handler :only (site)]))
 
 (defroutes routes
   (GET       "/books"      []                (get-books))
@@ -15,8 +16,7 @@
   (ANY       "/*"          []                (redirect "/books")))
 
 (def app
-  (handler/site routes))
+  (site routes))
 
-(defn -main []
-  (let [port (Integer/parseInt (get (System/getenv) "PORT" "8080"))]
-    (run-jetty app {:port port :join? false})))
+(defn start-server [port]
+  (run-jetty app {:port port :join? false}))

@@ -20,4 +20,6 @@
                      [lein-ring "0.5.4"]
                      [lein-eclipse "1.0.0"]]
   :ring {:handler librarian-clojure.core/app}
-  :main librarian-clojure.core)
+  :main librarian-clojure.run
+  :run-aliases {:root librarian-clojure.run/run-root
+                :books librarian-clojure.run/run-books})
