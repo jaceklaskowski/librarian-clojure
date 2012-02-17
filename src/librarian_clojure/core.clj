@@ -2,6 +2,7 @@
   "Provides a -main function which will start the application"
   (:use [compojure.core :only (GET POST PUT DELETE ANY defroutes)]
         [ring.adapter.jetty :only (run-jetty)]
+        [ring.middleware.reload :only (wrap-reload)]
         [compojure.route :only (resources not-found)])
   (:require [librarian-clojure.books :as librarian-books]
             [ring.handler.dump :as dump]
@@ -38,6 +39,5 @@
 (def app
   (handler/site routes))
 
-(defn -main []
-  (let [port (Integer/parseInt (get (System/getenv) "PORT" "8080"))]
-    (run-jetty app {:port port :join? false})))
+(defn start-server [port] 
+  (run-jetty (wrap-reload app) {:port port :join? false}))
