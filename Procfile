@@ -1,1 +1,1 @@
-web: lein run -m librarian-clojure.run :root $PORT
+web: lein run :root $PORT -m librarian-clojure.run
