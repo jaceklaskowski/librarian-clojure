@@ -11,3 +11,4 @@
 /checkouts
 /.lein-deps-sum
 /multi-lib
+/data
