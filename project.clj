@@ -22,4 +22,5 @@
   :ring {:handler librarian-clojure.core/app}
   :main librarian-clojure.run
   :run-aliases {:root librarian-clojure.run/run-root
-                :books librarian-clojure.run/run-books})
+                :books librarian-clojure.run/run-books}
+  :aot :all)
