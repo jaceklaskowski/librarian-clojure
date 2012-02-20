@@ -1,31 +1,10 @@
 (ns librarian-clojure.books
-  (:require [somnium.congomongo :as congo]
-            [hiccup.core :as hiccup]
+  (:use librarian-clojure.db
+        [somnium.congomongo :only (object-id)]) ;; TODO: Move to librarian-clojure.db and remove
+  (:require [hiccup.core :as hiccup]
             [hiccup.page-helpers :as hiccup-helpers]
             [hiccup.form-helpers :as form]
             [ring.util.response :as ring-util]))
-
-;;;;;; Database
-
-(def conn 
-  (congo/make-connection "test"
-                   :host "127.0.0.1"
-                   :port 27017))
-
-; Global !
-(congo/set-connection! conn)
-
-(defn db-add-book [book] (congo/insert! :books book))
-
-(defn db-get-books
-  ([] (db-get-books {}))
-  ([query] (congo/fetch :books :where query)))
-
-(defn db-update-book [id book] (congo/update! :books {:_id (congo/object-id id)} book))
-
-(defn db-delete-book [id] (congo/destroy! :books {:_id (congo/object-id id)}))
-
-;;;;;; View/logic
 
 (defn render-row [cells]
   [:tr (map (fn [v] [:td v]) cells)])
@@ -87,7 +66,7 @@
     (ring-util/redirect "/books")))
 
 (defn edit-book [id]
-  (let [book (first (db-get-books {:_id (congo/object-id id)}))]
+  (let [book (first (db-get-books {:_id (object-id id)}))]
      (hiccup-helpers/html4
        (render-books "Books in Database" (db-get-books))
        (render-book-form book))))
