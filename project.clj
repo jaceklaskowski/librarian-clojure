@@ -4,7 +4,6 @@
                    [ring/ring-devel "1.0.1"]
                    [compojure "1.0.1"]
                    [hiccup "0.3.8"]
-                   [org.mongodb/mongo-java-driver "2.6.5"]
                    [congomongo "0.1.8"]])
 
 ;; project definition for multi-version testing - consult :multi-deps option
