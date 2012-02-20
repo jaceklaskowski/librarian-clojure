@@ -1,1 +1,1 @@
-web: lein run :root $PORT -m librarian-clojure.run
+web: lein run :heroku $PORT -m librarian-clojure.run/run-heroku

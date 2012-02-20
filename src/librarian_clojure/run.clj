@@ -1,7 +1,8 @@
 (ns librarian-clojure.run
   "Bootstrap for 'lein run'"
   (:use [librarian-clojure.core]
-        [clojure.java.browse :only (browse-url)]))
+        [clojure.java.browse :only (browse-url)])
+  (:require [librarian-clojure.db :as db]))
 
 (defn- parse-port [[port] & args]
   (Integer. 
@@ -13,20 +14,22 @@
       (start-server port)
       (browse-url (str "http://localhost:" port url)))))
 
-(defn run-root [& args]
+(defn run-local [& args]
+  (db/init :local)
   (start-and-browse args "/"))
 
-(defn run-books [& args]
-  (start-and-browse args "/books"))
+(defn run-heroku [& args]
+  (db/init :heroku)
+  (start-and-browse args "/"))
 
 (defn -main [] 
   (do
     (println "Welcome to librarian-clojure!")
     (println "")
     (println "Usage:")
-    (println "lein run :root [port]")
-    (println "\tstarts server on [port] and launch web browser on the root page")
-    (println "lein run :books [port]")
-    (println "\tstarts server on [port] and launch web browser on the /books page")
+    (println "lein run :local [port]")
+    (println "\tstarts server on [port] with local MongoDB instance, and launches web browser")
+    (println "lein run :heroku [port]")
+    (println "\tstarts server on [port] with MongoDB set up for Heroku")
     (println "")
     (println "If port is empty, uses PORT environment variable, or defaults to 8080.")))

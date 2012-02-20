@@ -20,8 +20,9 @@
   :dev-dependencies [[lein-multi "1.1.0"]
                      [lein-ring "0.5.4"]
                      [lein-eclipse "1.0.0"]]
-  :ring {:handler librarian-clojure.core/app}
+  :ring {:handler librarian-clojure.core/app
+         :init librarian-clojure.run/run-local}
   :main librarian-clojure.run
-  :run-aliases {:root librarian-clojure.run/run-root
-                :books librarian-clojure.run/run-books}
+  :run-aliases {:local librarian-clojure.run/run-local
+                :heroku librarian-clojure.run/run-heroku}
   :aot :all)
