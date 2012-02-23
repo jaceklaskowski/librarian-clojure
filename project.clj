@@ -1,11 +1,12 @@
 ;; http://corfield.org/blog/post.cfm/testing-your-project-against-multiple-versions-of-clojure
+;; common dependencies
 (def common-deps '[[ring/ring-jetty-adapter "1.0.1"]
                    [ring/ring-devel "1.0.1"]
                    [compojure "1.0.1"]
                    [hiccup "0.3.8"]
-                   [org.mongodb/mongo-java-driver "2.6.5"]
-                   [congomongo "0.1.7"]])
+                   [congomongo "0.1.8"]])
 
+;; project definition for multi-version testing - consult :multi-deps option
 (defproject librarian-clojure "0.0.1-SNAPSHOT"
   :description "Book manager in Clojure"
   :url "http://github.com/jaceklaskowski/librarian-clojure"
@@ -16,10 +17,12 @@
   :repl-init librarian-clojure.repl
   :multi-deps {"1.4.0" ~(conj common-deps
                        '[org.clojure/clojure "1.4.0-master-SNAPSHOT"])}
-  :dev-dependencies [[lein-multi "1.1.0-SNAPSHOT"]
+  :dev-dependencies [[lein-multi "1.1.0"]
                      [lein-ring "0.5.4"]
                      [lein-eclipse "1.0.0"]]
-  :ring {:handler librarian-clojure.core/app}
+  :ring {:handler librarian-clojure.core/app
+         :init librarian-clojure.run/run-local}
   :main librarian-clojure.run
-  :run-aliases {:root librarian-clojure.run/run-root
-                :books librarian-clojure.run/run-books})
+  :run-aliases {:local librarian-clojure.run/run-local
+                :heroku librarian-clojure.run/run-heroku}
+  :aot :all)

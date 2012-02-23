@@ -18,7 +18,7 @@
   (tools/cljs-repl))
   ;;
   (let [port (Integer/parseInt (get (System/getenv) "PORT" "8080"))]
-    (def *server* (core/-main))
+    (def *server* (core/start-server port))
     (browse/browse-url (str "http://localhost:" port))))
 
 (defn stop

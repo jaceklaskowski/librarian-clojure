@@ -1,3 +1,7 @@
+.classpath
+.project
+.settings
+/bin
 /pom.xml
 *jar
 /lib
@@ -7,3 +11,4 @@
 /checkouts
 /.lein-deps-sum
 /multi-lib
+/data
