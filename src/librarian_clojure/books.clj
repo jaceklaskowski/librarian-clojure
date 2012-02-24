@@ -12,8 +12,8 @@
 (defn prepare-row [book]
   [(:author book) 
    (:title book)
-   [:a {:href (str "/books/edit?id=" (:_id book)) } "Edit"]
-   [:a {:href (str "/books/delete?id=" (:_id book)) } "Delete"]
+   [:a {:href (str "/books/edit/" (:_id book)) } "Edit"]
+   [:a {:href (str "/books/delete/" (:_id book)) } "Delete"]
    ])
 
 (defn render-book-table [books]
@@ -30,15 +30,14 @@
   ([] 
     (hiccup/html
       [:h1 "Enter Book"]
-      (form/form-to [:post "/books"]
+      (form/form-to [:post "/books/add"]
                     [:p (form/label :author "Author:") (form/text-field :author)]
                     [:p (form/label :title "Title:") (form/text-field :title)]
                     [:p (form/submit-button "Create")])))
   ([book]
     (hiccup/html
       [:h1 "Edit Book"]
-      (form/form-to [:post "/books"]
-                    (form/hidden-field :id (:_id book))
+      (form/form-to [:post (str "/books/update/" (:_id book))]
                     [:p (form/label :author "Author:") (form/text-field :author (:author book))]
                     [:p (form/label :title "Title:") (form/text-field :title (:title book))]
                     [:p (form/submit-button "Update")]))))
@@ -51,13 +50,15 @@
     (catch com.mongodb.MongoException$Network e
         (hiccup/html
           [:h1 "MongoDB not configured"]))))
-  
-(defn post-books [id author title]
+
+(defn add-book [author title]
   (do
-    (let [book {:author author :title title}]
-      (if id
-        (db-update-book id book) 
-        (db-add-book book)))
+    (db-add-book {:author author :title title})
+    (ring-util/redirect "/books")))
+
+(defn update-book [id author title]
+  (do
+    (db-update-book id {:author author :title title})
     (ring-util/redirect "/books")))
 
 (defn delete-book [id]
