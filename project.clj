@@ -19,7 +19,10 @@
                        '[org.clojure/clojure "1.4.0-master-SNAPSHOT"])}
   :dev-dependencies [[lein-multi "1.1.0"]
                      [lein-ring "0.5.4"]
-                     [lein-eclipse "1.0.0"]]
+                     [lein-eclipse "1.0.0"]
+                     [ring-mock "0.1.1"]
+                     [midje "1.3.1"]
+                     [lein-midje "1.0.8"]]
   :ring {:handler librarian-clojure.core/app
          :init librarian-clojure.run/run-local}
   :main librarian-clojure.run
