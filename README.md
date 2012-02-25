@@ -2,6 +2,8 @@
 
 Book manager for [Warszawa Java User Group](http://warszawa.jug.pl).
 
+The views (and perhaprs other parts, too) are heavily inspired by the [mametipsum](https://github.com/tvaughan/mametipsum) project.
+
 ## Running the project
 
  1. Install [leiningen](https://github.com/technomancy/leiningen)
