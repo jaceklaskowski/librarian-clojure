@@ -8,12 +8,13 @@
         [compojure.handler :only (site)]))
 
 (defroutes routes
-  (GET       "/books"      []                (get-books))
-  (POST      "/books"      [id author title] (post-books id author title))
-  (DELETE    "/books"      [id]              (delete-book id))
-  (GET       "/books/edit" [id]              (edit-book id))
+  (GET       "/books"            []                (get-books))
+  (POST      "/books/add"     [author title]    (add-book author title))
+  (POST      "/books/update/:id" [id author title] (update-book id author title))
+  (GET       "/books/delete/:id" [id]              (delete-book id))
+  (GET       "/books/edit/:id"   [id]              (edit-book id))
   (resources "/")
-  (ANY       "/*"          []                (redirect "/books")))
+  (ANY       "/*"                []                (redirect "/books")))
 
 (def app
   (site routes))
