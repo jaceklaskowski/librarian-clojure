@@ -1,5 +1,5 @@
 (ns librarian-clojure.core
-  "Provides a -main function which will start the application"
+  "Provides routes for the web application"
   (:use [compojure.core :only (GET POST PUT DELETE ANY defroutes)]
         [compojure.route :only (resources)]
         [ring.adapter.jetty :only (run-jetty)]
