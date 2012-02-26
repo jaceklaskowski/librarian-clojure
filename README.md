@@ -1,4 +1,4 @@
-# librarian-clojure
+# librarian-clojure [![Build Status](https://secure.travis-ci.org/jaceklaskowski/librarian-clojure.png)](http://travis-ci.org/jaceklaskowski/librarian-clojure)
 
 Book manager for [Warszawa Java User Group](http://warszawa.jug.pl).
 
