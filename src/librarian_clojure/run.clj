@@ -1,6 +1,6 @@
 (ns librarian-clojure.run
   "Bootstrap for 'lein run'"
-  (:use [librarian-clojure.core]
+  (:use librarian-clojure.core
         [clojure.java.browse :only (browse-url)])
   (:require [librarian-clojure.db :as db]))
 
