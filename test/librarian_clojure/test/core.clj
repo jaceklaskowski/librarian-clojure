@@ -1,7 +1,7 @@
 (ns librarian-clojure.test.core
-  (:use [librarian-clojure.core]
-        [ring.mock.request]
-        [midje.sweet])
+  (:use librarian-clojure.core
+        ring.mock.request
+        midje.sweet)
   (:require [librarian-clojure.books :as books]))
 
 (def book {:author "Robert C. Martin" :title "Clean Code"})
