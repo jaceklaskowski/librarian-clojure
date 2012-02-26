@@ -23,7 +23,7 @@
                      [lein-ring "0.5.4"]
                      [lein-eclipse "1.0.0"]
                      [ring-mock "0.1.1"]
-                     [midje "1.3.1"]
+                     [midje "1.3.1" :exclusions [org.clojure/clojure]]
                      [lein-midje "1.0.8"]
                      [com.stuartsierra/lazytest "1.2.3"]]
   :ring {:handler librarian-clojure.core/app
