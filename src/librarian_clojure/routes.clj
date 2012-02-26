@@ -13,4 +13,4 @@
   (GET       "/books/delete/:id" [id]              (delete-book id))
   (GET       "/books/edit/:id"   [id]              (edit-book id))
   (resources "/")
-  (not-found "404"))
+  (ANY       "/*"                []                (redirect "/books")))
