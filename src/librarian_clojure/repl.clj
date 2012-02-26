@@ -23,10 +23,4 @@
 
 (defn stop
   "Stop the server"
-  []
-  (.stop *server*))
-
-(println)
-(println "Type (go) to launch the server and run a browser.")
-(println "Type (stop) to stop the server.")
-(println)
+  [] (.stop *server*))
