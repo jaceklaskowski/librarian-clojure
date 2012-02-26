@@ -7,10 +7,6 @@
 <meta charset="UTF-8">
 <title>Librarian</title>
 <link rel="stylesheet" href="css/bootstrap-2.0.1.min.css">
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
-<script src="jquery-1.6.1.min.js"></script>
-<script src="ember-0.9.3.min.js"></script>
-<script src="js/bootstrap-2.0.1.min.js"></script>
 <style type="text/css">
 body {
 	padding-top: 10px;
@@ -21,6 +17,10 @@ body,textarea,.topbar input {
 		sans-serif;
 }
 </style>
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
+<script src="jquery-1.6.1.min.js"></script>
+<script src="ember-0.9.3.min.js"></script>
+<script src="js/bootstrap-2.0.1.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -29,6 +29,33 @@ body,textarea,.topbar input {
 				<a href="/">Librarian-Clojure</a> <small>a small web application for managing books in Clojure</small>
 			</h1>
 		</div>
+		<section id="main">
+			<div class="row">
+				<div class="span12">
+					<h1>Book list</h1>
+					<blockquote>
+						<p>The screen shows the list of available books</p>
+						<small>The Helper</small>
+					</blockquote>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Author</th>
+								<th>Title</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>Mickiewicz</td>
+								<td>Oda do radości</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
 		<footer>
 			<iframe src="http://bit.ly/zEZrRH" allowtransparency="true" frameborder="0" scrolling="0" width="132px" height="20px"></iframe>
 			<div class="pull-right">
