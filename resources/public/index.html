@@ -18,9 +18,31 @@ body,textarea,.topbar input {
 }
 </style>
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
-<script src="jquery-1.6.1.min.js"></script>
+<script src="js/jquery-1.7.1.min.js"></script>
 <script src="ember-0.9.3.min.js"></script>
 <script src="js/bootstrap-2.0.1.min.js"></script>
+<script>
+$(document).ready(function() {
+	$.getJSON('/books.json', function(json) {
+		var items = [];
+
+		$.each(json, function(key, val) {
+		    items.push('<tr>');
+		    items.push('<td>' + val["_id"] + '</td>');
+		    items.push('<td>' + val["author"] + '</td>');
+		    items.push('<td>' + val["title"] + '</td>');
+		    items.push('<td>');
+		    items.push('<a href="#" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Edit</a>');
+		    items.push(' ');
+		    items.push('<a href="#" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</a>');
+		    items.push('</td>');
+			items.push('</tr>');
+		});
+
+		$('.book-list').append(items.join(''));
+	});
+});
+</script>
 </head>
 <body>
 	<div class="container">
@@ -38,24 +60,18 @@ body,textarea,.topbar input {
 						<small>The Helper</small>
 					</blockquote>
 					<p>
-						<a href="#" class="btn btn-success"><i class="icon-plus icon-white"></i> New Book</a>
+						<a href="/books/add" class="btn btn-success"><i class="icon-plus icon-white"></i> New Book</a>
 					</p>
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>#</th>
+								<th>Id</th>
 								<th>Author</th>
 								<th>Title</th>
 								<th>Action</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td>Mickiewicz</td>
-								<td>Oda do radości</td>
-								<td><a href="#" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Edit</a> <a href="/books/delete/0" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</a></td>
-							</tr>
+						<tbody class="book-list">
 						</tbody>
 					</table>
 				</div>

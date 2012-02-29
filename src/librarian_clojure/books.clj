@@ -4,7 +4,8 @@
   (:require [hiccup.core :as hiccup]
             [hiccup.page-helpers :as hiccup-helpers]
             [hiccup.form-helpers :as form]
-            [ring.util.response :as ring-util]))
+            [ring.util.response :as ring-util]
+            [clojure.data.json :as json]))
 
 (defn render-row [cells]
   [:tr (map (fn [v] [:td v]) cells)])
@@ -51,20 +52,33 @@
         (hiccup/html
           [:h1 "MongoDB not configured"]))))
 
+;; https://github.com/clojure/data.json/blob/master/src/main/clojure/clojure/data/json.clj
+(defn- write-json-mongodb-objectid [x out escape-unicode?]
+  (json/write-json (str x) out escape-unicode?))
+
+(extend org.bson.types.ObjectId json/Write-JSON
+  {:write-json write-json-mongodb-objectid})
+
+(defn get-books-json []
+  (let [books (db-get-books)
+        books-json (json/json-str books)]
+    ;;(println "RESULT: " books-json)
+    books-json))
+
 (defn add-book [author title]
   (do
     (db-add-book {:author author :title title})
-    (ring-util/redirect "/books")))
+    (ring-util/redirect "/")))
 
 (defn update-book [id author title]
   (do
     (db-update-book id {:author author :title title})
-    (ring-util/redirect "/books")))
+    (ring-util/redirect "/")))
 
 (defn delete-book [id]
   (do
     (db-delete-book id)
-    (ring-util/redirect "/books")))
+    (ring-util/redirect "/")))
 
 (defn edit-book [id]
   (let [book (first (db-get-books {:_id (object-id id)}))]
