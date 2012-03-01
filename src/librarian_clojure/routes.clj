@@ -8,6 +8,7 @@
 (defroutes routes
   (GET       "/"                 []                (redirect "/index.html"))
   (GET       "/books"            []                (get-books))
+  (GET       "/books.json"       []                (get-books-json))
   (POST      "/books/add"        [author title]    (add-book author title))
   (POST      "/books/update/:id" [id author title] (update-book id author title))
   (GET       "/books/delete/:id" [id]              (delete-book id))

@@ -1,8 +1,6 @@
 (ns librarian-clojure.db
   (:use somnium.congomongo))
 
-(declare db-add-book)
-
 (defn init [env]
   (println "Environment: " env)
   (if (= env :heroku)
@@ -14,15 +12,18 @@
       (println "Authentication result: " (authenticate db "heroku" "passw0rd")))
     (def db
       (make-connection :test
-                       {:host "127.0.0.1" :port 27017})))
-  ;; FIXME Remove after the delete action works - we know the ids
-  (try
-    (db-add-book {:_id 0 :author "Mickiewicz" :title "Konrad Wallenrod"})
-  (catch Exception e)))
+                       {:host "127.0.0.1" :port 27017}))))
+
+(defn- next-seq [coll]
+  (with-mongo db
+    (:seq (fetch-and-modify :sequences {:_id coll} {:$inc {:seq 1}} :return-new? true :upsert? true))))
+
+(defn- insert-with-id [coll el]
+  (insert! coll (assoc el :_id (next-seq coll))))
 
 (defn db-add-book [book]
   (with-mongo db
-    (insert! :books book)))
+    (insert-with-id :books book)))
 
 (defn db-get-books
   ([]
@@ -33,18 +34,8 @@
 
 (defn db-update-book [id book] 
   (with-mongo db
-    (update! :books {:_id (object-id id)} book)))
+    (update! :books {:_id id} book)))
 
 (defn db-delete-book [id]
-  ;; FIXME: Remove after db-add-book FIXME is removed
-  (let [_id (if (= id "0") 0 (object-id id))]
-    (do (prn _id)
-    (with-mongo db
-      (destroy! :books {:_id _id})))))
-
-(defn next-seq [coll]
   (with-mongo db
-    (:seq (fetch-and-modify :sequences {:_id coll} {:$inc {:seq 1}} :return-new? true :upsert? true))))
-
-(defn insert-with-id [coll el]
-  (insert! coll (assoc el :_id (next-seq coll))))
+    (destroy! :books {:_id id})))

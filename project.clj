@@ -5,7 +5,8 @@
                    [compojure "1.0.1"]
                    [hiccup "0.3.8"]
                    [congomongo "0.1.8"]
-                   [midje "1.3.1"]])
+                   [midje "1.3.1"]
+                   [org.clojure/data.json "0.1.2"]])
 
 ;; project definition for multi-version testing - consult :multi-deps option
 (defproject librarian-clojure "0.0.1-SNAPSHOT"
