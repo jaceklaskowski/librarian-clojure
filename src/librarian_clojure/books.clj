@@ -72,16 +72,16 @@
 
 (defn update-book [id author title]
   (do
-    (db-update-book id {:author author :title title})
+    (db-update-book (Integer. id) {:author author :title title})
     (ring-util/redirect "/")))
 
 (defn delete-book [id]
   (do
-    (db-delete-book id)
+    (db-delete-book (Integer. id))
     (ring-util/redirect "/")))
 
 (defn edit-book [id]
-  (let [book (first (db-get-books {:_id (object-id id)}))]
+  (let [book (first (db-get-books {:_id (Integer. id)}))]
      (hiccup-helpers/html4
        (render-books "Books in Database" (db-get-books))
        (render-book-form book))))
