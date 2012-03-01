@@ -37,6 +37,14 @@
 
 (defn db-delete-book [id]
   ;; FIXME: Remove after db-add-book FIXME is removed
-  (let [_id (if (= id "0") id (object-id id))]
+  (let [_id (if (= id "0") 0 (object-id id))]
+    (do (prn _id)
     (with-mongo db
-      (destroy! :books {:_id _id}))))
+      (destroy! :books {:_id _id})))))
+
+(defn next-seq [coll]
+  (with-mongo db
+    (:seq (fetch-and-modify :sequences {:_id coll} {:$inc {:seq 1}} :return-new? true :upsert? true))))
+
+(defn insert-with-id [coll el]
+  (insert! coll (assoc el :_id (next-seq coll))))
