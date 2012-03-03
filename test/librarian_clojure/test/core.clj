@@ -28,7 +28,7 @@
 (fact "/books form submit - insert new"
       (against-background 
         (books/add-book "Robert C. Martin" "Clean Code") => (str "Insert as expected"))
-      (let [req (request :post "/books/add" book)
+      (let [req (request :put "/books" book)
             response (app req)]
         (:status response) => 200
         (:body response) => "Insert as expected"))
