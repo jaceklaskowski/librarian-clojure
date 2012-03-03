@@ -66,9 +66,8 @@
     books-json))
 
 (defn add-book [author title]
-  (do
-    (db-add-book {:author author :title title})
-    (ring-util/redirect "/")))
+  (let [saved-book (db-add-book {:author author :title title})]
+    (json/json-str saved-book)))
 
 (defn update-book [id author title]
   (do
