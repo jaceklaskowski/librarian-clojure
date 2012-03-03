@@ -22,25 +22,87 @@ body,textarea,.topbar input {
 <script src="ember-0.9.3.min.js"></script>
 <script src="js/bootstrap-2.0.1.min.js"></script>
 <script>
+function appendBook(row, book) {
+	row.append('<td>' + book._id + '</td>');
+	row.append('<td>' + book["author"] + '</td>');
+	row.append('<td>' + book["title"] + '</td>');
+	var buttons = $('<td>');
+	buttons.append('<a href="#" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Edit</a>');
+	buttons.append(' '); // FIXME: Use CSS padding instead of whitespace?
+	buttons.append('<a href="#" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</a>');
+	row.append(buttons);
+}
+
+function validateBook(author, title) {
+	var errorMsg = '';
+	if(author.length == 0) {
+		errorMsg += 'Author is missing\n';
+	}
+	if(title.length == 0) {
+		errorMsg += 'Title is missing\n';
+	}
+	if(errorMsg.length > 0) {
+		alert(errorMsg);
+	}
+	return errorMsg.length == 0;
+}
+
+function performSave(author, title, row) {
+	$.ajax('/books', {
+		type: 'PUT',
+		data: {"author": author, "title": title},
+		dataType: 'json',
+		success: function(book) {
+			row.empty();
+			appendBook(row, book);
+		}
+	});
+}
+
+function saveNewBook(row) {
+	return function() {
+		var authorInput = row.find('input[name="author"]');
+		var author = authorInput.val().trim();
+		
+		var titleInput = row.find('input[name="title"]');
+		var title = titleInput.val().trim();
+		
+		var button = row.find('button');
+		
+		if(validateBook(author, title)) {
+			authorInput.attr('disabled', true);
+			titleInput.attr('disabled', true);
+			button.attr('disabled', true);
+			button.text('Saving...');
+			performSave(author, title, row);
+		}
+	};
+}
+
+function newBookClicked() {
+	var row = $('<tr>');
+	row.append('<td>');
+	row.append('<td><input type="text" name="author" /></td>');
+	row.append('<td><input type="text" name="title"/></td>');
+	row.append('<td><button class="btn btn-success"><i class="icon-pencil icon-white"></i> Create</button></td>');
+	
+	var btn = row.find('button');
+	btn.click(saveNewBook(row));
+
+	$('.book-list').append(row);
+}
+
 $(document).ready(function() {
 	$.getJSON('/books.json', function(json) {
-		var items = [];
-
+		var bookTable = $('.book-list');
 		$.each(json, function(key, val) {
-		    items.push('<tr>');
-		    items.push('<td>' + val["_id"] + '</td>');
-		    items.push('<td>' + val["author"] + '</td>');
-		    items.push('<td>' + val["title"] + '</td>');
-		    items.push('<td>');
-		    items.push('<a href="#" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Edit</a>');
-		    items.push(' ');
-		    items.push('<a href="#" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</a>');
-		    items.push('</td>');
-			items.push('</tr>');
+			var row = $('<tr>');
+			appendBook(row, val);
+			bookTable.append(row);
 		});
-
-		$('.book-list').append(items.join(''));
 	});
+	
+	$('#btn-add-book').click(newBookClicked);
 });
 </script>
 </head>
@@ -59,9 +121,6 @@ $(document).ready(function() {
 						<p>The screen shows the list of available books</p>
 						<small>The Helper</small>
 					</blockquote>
-					<p>
-						<a href="/books/add" class="btn btn-success"><i class="icon-plus icon-white"></i> New Book</a>
-					</p>
 					<table class="table table-striped">
 						<thead>
 							<tr>
@@ -74,6 +133,9 @@ $(document).ready(function() {
 						<tbody class="book-list">
 						</tbody>
 					</table>
+					<p>
+						<button class="btn btn-success" id="btn-add-book"><i class="icon-plus icon-white"></i> New Book</button>
+					</p>
 				</div>
 			</div>
 		</section>
