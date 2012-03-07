@@ -22,23 +22,63 @@ body,textarea,.topbar input {
 <script src="ember-0.9.3.min.js"></script>
 <script src="js/bootstrap-2.0.1.min.js"></script>
 <script>
+function createButton(params) {
+	var button = $('<button>');
+	button.addClass('btn').addClass(params.buttonClass);
+	if(params.icon) {
+		var icon = $('<i>').addClass('icon-white').addClass(params.icon)
+		button.append(icon);
+		button.append(' ');
+	}
+	button.append(params.caption);
+	button.click(params.callback);
+	return button;
+}
+
 function appendBook(row, book) {
+	row.attr('data-id', book._id);
+	row.attr('data-author', book.author);
+	row.attr('data-title', book.title);
 	row.append('<td>' + book._id + '</td>');
-	row.append('<td>' + book["author"] + '</td>');
-	row.append('<td>' + book["title"] + '</td>');
+	row.append('<td>' + book.author + '</td>');
+	row.append('<td>' + book.title + '</td>');
+	
+	var editButton = createButton({
+		buttonClass: 'btn-primary',
+		icon: 'icon-pencil',
+		caption: 'Edit',
+		callback: editBook(row)});
+	
+	var deleteButton = createButton({
+		buttonClass: 'btn-danger',
+		icon: 'icon-trash',
+		caption: 'Delete',
+		callback: deleteBook(row)});
+	
 	var buttons = $('<td>');
-	buttons.append('<a href="#" class="btn btn-primary"><i class="icon-pencil icon-white"></i> Edit</a>');
-	buttons.append(' '); // FIXME: Use CSS padding instead of whitespace?
-	buttons.append('<a href="#" class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</a>');
+	buttons.append(editButton);
+	buttons.append(' ');
+	buttons.append(deleteButton);
 	row.append(buttons);
 }
 
-function validateBook(author, title) {
+function isExistingBook(row) {
+	return row.attr('data-id');
+}
+
+function getEditedBook(row) {
+	return {
+		_id: row.attr('data-id'), 
+		author: row.find('input[name="author"]').val().trim(), 
+		title: row.find('input[name="title"]').val().trim()};
+}
+
+function validateBook(book) {
 	var errorMsg = '';
-	if(author.length == 0) {
+	if(book.author.length == 0) {
 		errorMsg += 'Author is missing\n';
 	}
-	if(title.length == 0) {
+	if(book.title.length == 0) {
 		errorMsg += 'Title is missing\n';
 	}
 	if(errorMsg.length > 0) {
@@ -47,10 +87,24 @@ function validateBook(author, title) {
 	return errorMsg.length == 0;
 }
 
-function performSave(author, title, row) {
+function deleteBook(row) {
+	return function() {
+		var bookId = row.attr('data-id');
+		$.ajax('/books/' + bookId, {
+			type: 'DELETE',
+			dataType: 'json',
+			success: function(book) {
+				row.remove();
+			}
+		});
+	};
+}
+
+
+function performSave(book, row) {
 	$.ajax('/books', {
 		type: 'PUT',
-		data: {"author": author, "title": title},
+		data: book,
 		dataType: 'json',
 		success: function(book) {
 			row.empty();
@@ -59,41 +113,87 @@ function performSave(author, title, row) {
 	});
 }
 
-function saveNewBook(row) {
-	return function() {
-		var authorInput = row.find('input[name="author"]');
-		var author = authorInput.val().trim();
-		
-		var titleInput = row.find('input[name="title"]');
-		var title = titleInput.val().trim();
-		
-		var button = row.find('button');
-		
-		if(validateBook(author, title)) {
-			authorInput.attr('disabled', true);
-			titleInput.attr('disabled', true);
-			button.attr('disabled', true);
-			button.text('Saving...');
-			performSave(author, title, row);
+function performUpdate(book, row) {
+	$.ajax('/books/' + book._id, {
+		type: 'POST',
+		data: book,
+		dataType: 'json',
+		success: function(book) {
+			row.empty();
+			appendBook(row, book);
 		}
+	});
+}
+
+function updateBook(row) {
+	return function() {
+		var book = getEditedBook(row);
+		if(validateBook(book)) {
+			row.find('input').attr('disabled', true);
+			row.find('button').attr('disabled', true);
+			if(isExistingBook(row)) {
+				performUpdate(book, row);
+			} else {
+				performSave(book, row);
+			}
+		}
+	}
+}
+
+function cancelEdit(row) {
+	return function() {
+		if(isExistingBook(row)) {
+			var book = {
+					_id: row.attr('data-id'), 
+					author: row.attr('data-author'), 
+					title: row.attr('data-title')};
+			row.empty();
+			appendBook(row, book);
+		} else {
+			row.remove();
+		}
+	}
+}
+
+function editBook(row) {
+	return function() {
+		row.empty();
+		if(isExistingBook(row)) {
+			row.append('<td>' + row.attr('data-id') + '</td>');
+			row.append('<td><input type="text" name="author" value="' + row.attr('data-author') + '" /></td>');
+			row.append('<td><input type="text" name="title" value="' + row.attr('data-title') + '" /></td>');
+		} else {
+			row.append('<td>');
+			row.append('<td><input type="text" name="author" /></td>');
+			row.append('<td><input type="text" name="title" /></td>');
+		}
+		var saveButton = createButton({
+			buttonClass: 'btn-success',
+			icon: 'icon-pencil',
+			caption: 'Save',
+			callback: updateBook(row)});
+		
+		var cancelButton = createButton({
+			buttonClass: 'btn-success',
+			caption: 'Cancel',
+			callback: cancelEdit(row)});
+		
+		var buttons = $('<td>');
+		buttons.append(saveButton);
+		buttons.append(' ');
+		buttons.append(cancelButton);
+		row.append(buttons);
 	};
 }
 
 function newBookClicked() {
 	var row = $('<tr>');
-	row.append('<td>');
-	row.append('<td><input type="text" name="author" /></td>');
-	row.append('<td><input type="text" name="title"/></td>');
-	row.append('<td><button class="btn btn-success"><i class="icon-pencil icon-white"></i> Create</button></td>');
-	
-	var btn = row.find('button');
-	btn.click(saveNewBook(row));
-
 	$('.book-list').append(row);
+	editBook(row).call();
 }
 
 $(document).ready(function() {
-	$.getJSON('/books.json', function(json) {
+	$.getJSON('/books', function(json) {
 		var bookTable = $('.book-list');
 		$.each(json, function(key, val) {
 			var row = $('<tr>');
@@ -124,9 +224,9 @@ $(document).ready(function() {
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th>Id</th>
-								<th>Author</th>
-								<th>Title</th>
+								<th width="5%">Id</th>
+								<th width="35%">Author</th>
+								<th width="35%">Title</th>
 								<th>Action</th>
 							</tr>
 						</thead>
