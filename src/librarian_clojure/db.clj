@@ -32,6 +32,9 @@
     (with-mongo db
       (fetch :books :where query))))
 
+(defn db-get-book [id] 
+  (first (db-get-books {:_id id})))
+
 (defn db-update-book [id book] 
   (with-mongo db
     (update! :books {:_id id} book)))

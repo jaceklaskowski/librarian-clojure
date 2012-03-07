@@ -6,26 +6,26 @@
 
 (def book {:author "Robert C. Martin" :title "Clean Code"})
 
-(fact "/books list"
+(fact "get /books -> list all books"
       (against-background (books/get-books) => "Get Books")
       (let [req (request :get "/books")
             response (app req)]
         (:status response) => 200
         (:body response) => "Get Books"))
 
-(fact "/books form submit - update existing"
+(fact "post /books/:id -> update existing"
       (against-background 
         (books/update-book "15" "Robert C. Martin" "Clean Code") => (str "Update as expected"))
-      (let [req (request :post "/books/update/15" book)
+      (let [req (request :post "/books/15" book)
             response (app req)]
         (:status response) => 200
         (:body response) => "Update as expected")
-      (let [req (request :post "/books/update" book)
+      (let [req (request :post "/books/" book)
             response (app req)]
         (:status response) => 302
         (:headers response) => {"Location" "/books"}))
 
-(fact "/books form submit - insert new"
+(fact "put /books -> insert new"
       (against-background 
         (books/add-book "Robert C. Martin" "Clean Code") => (str "Insert as expected"))
       (let [req (request :put "/books" book)
@@ -33,26 +33,14 @@
         (:status response) => 200
         (:body response) => "Insert as expected"))
 
-(fact "/books delete"
+(fact "delete /books/:id -> delete"
       (against-background 
         (books/delete-book "15") => (str "Delete as expected"))
-      (let [req (request :get "/books/delete/15")
+      (let [req (request :delete "/books/15")
             response (app req)]
         (:status response) => 200
         (:body response) => "Delete as expected")
-      (let [req (request :get "/books/delete")
-            response (app req)]
-        (:status response) => 302
-        (:headers response) => {"Location" "/books"}))
-
-(fact "/books edit"
-      (against-background 
-        (books/edit-book "15") => (str "Edit as expected"))
-      (let [req (request :get "/books/edit/15")
-            response (app req)]
-        (:status response) => 200
-        (:body response) => "Edit as expected")
-      (let [req (request :get "/books/edit")
+      (let [req (request :delete "/books")
             response (app req)]
         (:status response) => 302
         (:headers response) => {"Location" "/books"}))
