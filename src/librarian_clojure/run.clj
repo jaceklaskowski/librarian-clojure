@@ -9,10 +9,13 @@
     (or port (get (System/getenv) "PORT") 8080)))
 
 (defn- start-and-browse [args url]
-  (do 
-    (let [port (parse-port args)]
-      (start-server port)
-      (browse-url (str "http://localhost:" port url)))))
+  (let [port (parse-port args)]
+    (start-server port)
+    (browse-url (str "http://localhost:" port url))))
+
+(defn- start [args]
+  (let [port (parse-port args)]
+    (start-server port)))
 
 (defn run-local [& args]
   (db/init :local)
@@ -20,7 +23,7 @@
 
 (defn run-heroku [& args]
   (db/init :heroku)
-  (start-and-browse args "/"))
+  (start args))
 
 (defn -main [] 
   (do
