@@ -7,4 +7,4 @@
   (site routes))
 
 (defn start-server [port]
-  (run-jetty app {:port port :join? false}))
+  (run-jetty #'app {:port port :join? false}))

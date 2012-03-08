@@ -24,6 +24,5 @@
     (json/json-str (db-get-book id))))
 
 (defn delete-book [id]
-  (let [id (Integer. id)]
-    (db-delete-book id)
-    (json/json-str {:book-deleted id})))
+  (db-delete-book id)
+  (json/json-str {:book-deleted id}))
