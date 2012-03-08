@@ -16,7 +16,7 @@
                   "https://oss.sonatype.org/content/repositories/snapshots/"]
                  ["stuart" "http://stuartsierra.com/maven2"]]
   :dependencies ~(conj common-deps
-                       '[org.clojure/clojure "1.3.0"])
+                       '[org.clojure/clojure "1.4.0-alpha3"])
   :repl-init librarian-clojure.repl
   :multi-deps {"1.4.0" ~(conj common-deps
                        '[org.clojure/clojure "1.4.0-master-SNAPSHOT"])}
