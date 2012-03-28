@@ -12,3 +12,5 @@
 /.lein-deps-sum
 /multi-lib
 /data
+/target
+

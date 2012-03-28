@@ -7,7 +7,8 @@
                    [congomongo "0.1.8"]
                    [midje "1.3.1"]
                    [org.clojure/data.json "0.1.2"]
-                   [jbcrypt "0.3"]])
+                   [jbcrypt "0.3"]
+                   [sandbar "0.4.0-SNAPSHOT"]])
 
 ;; project definition for multi-version testing - consult :multi-deps option
 (defproject librarian-clojure "0.0.1-SNAPSHOT"
@@ -17,7 +18,7 @@
                   "https://oss.sonatype.org/content/repositories/snapshots/"]
                  ["stuart" "http://stuartsierra.com/maven2"]]
   :dependencies ~(conj common-deps
-                       '[org.clojure/clojure "1.3.0"])
+                       '[org.clojure/clojure "1.4.0-alpha3"])
   :repl-init librarian-clojure.repl
   :multi-deps {"1.4.0" ~(conj common-deps
                        '[org.clojure/clojure "1.4.0-master-SNAPSHOT"])}
@@ -29,7 +30,7 @@
                      [lein-midje "1.0.8"]
                      [com.stuartsierra/lazytest "1.2.3"]]
   :ring {:handler librarian-clojure.core/app
-         :init librarian-clojure.run/run-local}
+         :init librarian-clojure.run/run-local-ring}
   :main librarian-clojure.run
   :run-aliases {:local librarian-clojure.run/run-local
                 :heroku librarian-clojure.run/run-heroku}
