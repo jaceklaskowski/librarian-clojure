@@ -6,7 +6,8 @@
                    [hiccup "0.3.8"]
                    [congomongo "0.1.8"]
                    [midje "1.3.1"]
-                   [org.clojure/data.json "0.1.2"]])
+                   [org.clojure/data.json "0.1.2"]
+                   [sandbar "0.4.0-SNAPSHOT"]])
 
 ;; project definition for multi-version testing - consult :multi-deps option
 (defproject librarian-clojure "0.0.1-SNAPSHOT"
@@ -28,7 +29,7 @@
                      [lein-midje "1.0.8"]
                      [com.stuartsierra/lazytest "1.2.3"]]
   :ring {:handler librarian-clojure.core/app
-         :init librarian-clojure.run/run-local}
+         :init librarian-clojure.run/run-local-ring}
   :main librarian-clojure.run
   :run-aliases {:local librarian-clojure.run/run-local
                 :heroku librarian-clojure.run/run-heroku}
