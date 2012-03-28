@@ -21,6 +21,9 @@
   (db/init :local)
   (start-and-browse args "/"))
 
+(defn run-local-ring [& args]
+  (db/init :local))
+
 (defn run-heroku [& args]
   (db/init :heroku)
   (start args))
