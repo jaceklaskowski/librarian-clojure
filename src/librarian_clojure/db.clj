@@ -1,5 +1,10 @@
 (ns librarian-clojure.db
-  (:use somnium.congomongo))
+  (:use somnium.congomongo)
+  (:import [jBCrypt BCrypt]))
+
+;; FIXME remove dependency on jbcrypt & adding users on launch as soon as we implement "sign up"
+(defn crypt [pw]
+  (BCrypt/hashpw pw (BCrypt/gensalt 12)))
 
 (defn init [env]
   (println "Environment: " env)
@@ -10,9 +15,13 @@
                          {:host "staff.mongohq.com" :port 10056}))
       (println "Database URL: " (System/getenv "DATABASE_URL"))
       (println "Authentication result: " (authenticate db "heroku" "passw0rd")))
-    (def db
-      (make-connection :test
-                       {:host "127.0.0.1" :port 27017}))))
+    (do
+      (def db
+        (make-connection :test
+                       {:host "127.0.0.1" :port 27017}))
+      (with-mongo db
+        (insert! :users {:login "admin" :password (crypt "admin") :roles [:admin :user]})
+        (insert! :users {:login "user" :password (crypt "user") :roles [:user]})))))
 
 (defn- next-seq [coll]
   (with-mongo db
@@ -20,6 +29,8 @@
 
 (defn- insert-with-id [coll el]
   (insert! coll (assoc el :_id (next-seq coll))))
+
+;; Books
 
 (defn db-add-book [book]
   (with-mongo db
@@ -42,3 +53,10 @@
 (defn db-delete-book [id]
   (with-mongo db
     (destroy! :books {:_id id})))
+
+;; Users
+
+(defn db-get-user [login]
+  (with-mongo db
+    (do (prn "fetch " login) (prn (fetch-one :users :where {:login login}))
+    (fetch-one :users :where {:login login}))))

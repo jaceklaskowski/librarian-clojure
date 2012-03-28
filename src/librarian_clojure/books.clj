@@ -11,19 +11,17 @@
   {:write-json write-json-mongodb-objectid})
 
 (defn get-books []
-  (let [books (db-get-books)]
-    (json/json-str books)))
+  (db-get-books))
 
 (defn add-book [author title]
-  (let [saved-book (db-add-book {:author author :title title})]
-    (json/json-str saved-book)))
+  (db-add-book {:author author :title title}))
 
 (defn update-book [id author title]
   (let [id (Integer. id)]
     (db-update-book id {:author author :title title})
-    (json/json-str (db-get-book id))))
+    (db-get-book id)))
 
 (defn delete-book [id]
   (let [id (Integer. id)]
     (db-delete-book id)
-    (json/json-str {:book-deleted id})))
+    {:book-deleted id}))
