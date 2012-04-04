@@ -192,6 +192,28 @@ function newBookClicked() {
 	editBook(row).call();
 }
 
+function loginClicked() {
+	var login = $("#login-form").find('input[name="login"]').val().trim();
+	var pw = $("#login-form").find('input[name="password"]').val().trim();
+	if(login.length == 0 || pw.length == 0) {
+		alert('Please provide user name and password');
+	} else {
+		$.ajax('/login2', {
+			type: 'POST',
+			data: {"login": login, "password": pw},
+			dataType: 'json',
+			success: function(data) {
+				if(data.successful) {
+					location.reload();
+				} else {
+					$("#login-form .alert").show();
+				}
+			}
+		});
+	}
+	return false;
+}
+
 $(document).ready(function() {
 	$.getJSON('/books', function(json) {
 		var bookTable = $('.book-list');
@@ -203,6 +225,8 @@ $(document).ready(function() {
 	});
 	
 	$('#btn-add-book').click(newBookClicked);
+	$('#btn-login').click(loginClicked);
+	$("#login-form .alert").hide();
 });
 </script>
 </head>
@@ -215,7 +239,7 @@ $(document).ready(function() {
 		</div>
 		<section id="main">
 			<div class="row">
-				<div class="span12">
+				<div class="span10">
 					<h1>Book list</h1>
 					<blockquote>
 						<p>The screen shows the list of available books</p>
@@ -236,6 +260,23 @@ $(document).ready(function() {
 					<p>
 						<button class="btn btn-success" id="btn-add-book"><i class="icon-plus icon-white"></i> New Book</button>
 					</p>
+				</div>
+				<div class="span2">
+					<div  id="login-form">
+						<form>
+							<fieldset>
+								<legend>Log In</legend>
+								<label for="login">User Name:</label><input type="text" name="login" />
+								<label for="password">Password:</label><input type="password" name="password" />
+								<button class="btn" id="btn-login">Log In</button>		
+							</fieldset>
+						</form>
+						
+						<div class="alert alert-error">
+							Login failed
+						</div>
+					</div>
+					
 				</div>
 			</div>
 		</section>
