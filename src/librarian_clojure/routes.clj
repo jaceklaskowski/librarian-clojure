@@ -5,7 +5,8 @@
         [ring.util.response :only (redirect)]
         librarian-clojure.books
         librarian-clojure.security)
-  (:require [clojure.data.json :as json]))
+  (:require [clojure.data.json :as json]
+            [sandbar.auth :as auth]))
 
 (defroutes routes
   (GET       "/"                 []                        (redirect "/index.html"))
@@ -15,5 +16,7 @@
   (POST      "/books/:id"        [id author title]         (-> (update-book id author title) json/json-str))
   (POST      "/login"            [login password request]  (-> (log-in login password request) json/json-str))
   (POST      "/login2"           request                   (-> (log-in "admin" "admin" request) json/json-str))
+  (GET       "/admin"            []                        (admin-placeholder))
+  (GET       "/permission-denied"            []            "Perm denied")
   (resources "/")
   (ANY       "/*"                []                        (redirect "/")))

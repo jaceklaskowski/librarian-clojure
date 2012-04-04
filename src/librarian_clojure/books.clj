@@ -1,7 +1,8 @@
 (ns librarian-clojure.books
   (:use librarian-clojure.db
         [somnium.congomongo :only (object-id)]) ;; TODO: Move to librarian-clojure.db and remove
-  (:require [clojure.data.json :as json]))
+  (:require [clojure.data.json :as json]
+            [sandbar.auth :as auth]))
 
 ;; https://github.com/clojure/data.json/blob/master/src/main/clojure/clojure/data/json.clj
 (defn- write-json-mongodb-objectid [x out escape-unicode?]
@@ -25,3 +26,8 @@
   (let [id (Integer. id)]
     (db-delete-book id)
     {:book-deleted id}))
+
+(defn admin-placeholder []
+  (str
+    (auth/current-user)
+    auth/*sandbar-current-user*))

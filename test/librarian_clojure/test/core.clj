@@ -2,7 +2,8 @@
   (:use librarian-clojure.core
         ring.mock.request
         midje.sweet)
-  (:require [librarian-clojure.books :as books]))
+  (:require [librarian-clojure.books :as books]
+            [clojure.data.json :as json]))
 
 (def book {:author "Robert C. Martin" :title "Clean Code"})
 
@@ -11,7 +12,7 @@
       (let [req (request :get "/books")
             response (app req)]
         (:status response) => 200
-        (:body response) => "Get Books"))
+        (:body response) => (json/json-str "Get Books")))
 
 (fact "post /books/:id -> update existing"
       (against-background 
@@ -19,11 +20,11 @@
       (let [req (request :post "/books/15" book)
             response (app req)]
         (:status response) => 200
-        (:body response) => "Update as expected")
+        (:body response) => (json/json-str "Update as expected"))
       (let [req (request :post "/books/" book)
             response (app req)]
         (:status response) => 302
-        (:headers response) => {"Location" "/books"}))
+        (:headers response) => {"Location" "/"}))
 
 (fact "put /books -> insert new"
       (against-background 
@@ -31,7 +32,7 @@
       (let [req (request :put "/books" book)
             response (app req)]
         (:status response) => 200
-        (:body response) => "Insert as expected"))
+        (:body response) => (json/json-str "Insert as expected")))
 
 (fact "delete /books/:id -> delete"
       (against-background 
@@ -39,8 +40,8 @@
       (let [req (request :delete "/books/15")
             response (app req)]
         (:status response) => 200
-        (:body response) => "Delete as expected")
+        (:body response) => (json/json-str "Delete as expected"))
       (let [req (request :delete "/books")
             response (app req)]
         (:status response) => 302
-        (:headers response) => {"Location" "/books"}))
+        (:headers response) => {"Location" "/"}))
