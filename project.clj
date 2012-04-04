@@ -7,6 +7,7 @@
                    [congomongo "0.1.8"]
                    [midje "1.3.1"]
                    [org.clojure/data.json "0.1.2"]
+                   [jbcrypt "0.3"]
                    [sandbar "0.4.0-SNAPSHOT"]])
 
 ;; project definition for multi-version testing - consult :multi-deps option
@@ -17,7 +18,9 @@
                   "https://oss.sonatype.org/content/repositories/snapshots/"]
                  ["stuart" "http://stuartsierra.com/maven2"]]
   :dependencies ~(conj common-deps
-                       '[org.clojure/clojure "1.4.0-alpha3"])
+                       ; KG watch out, 1.4.0 does not seem to work with sandbar
+                       ; '[org.clojure/clojure "1.4.0-alpha3"])
+                       '[org.clojure/clojure "1.3.0"])
   :repl-init librarian-clojure.repl
   :multi-deps {"1.4.0" ~(conj common-deps
                        '[org.clojure/clojure "1.4.0-master-SNAPSHOT"])}
