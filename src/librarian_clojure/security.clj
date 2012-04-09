@@ -9,19 +9,8 @@
 (defn check-password [candidate crypt]
   (BCrypt/checkpw candidate crypt))
 
-;TODO: destructure
 (defn log-in [request]
-  (let [login (:login (:params request))
-        password (:password (:params request))]
-    ;(prn login request)
+  (if-let [{:keys [login password]} (:params request)]
     (if-let [user (db-get-user login)]
-      (when (check-password password (:password user))
-        {:name login :roles (into #{} (map keyword (:roles user)))})
-      )
-  ))
-  ;(if-let [user (db-get-user login)]
-    ;(when (check-password password (:password user))
-     ; (prn request)
-      ;(assoc-in [:session :user] user)
-      ;{:successful true})
-    ;{:successful false}))
+      (if (check-password password (:password user))
+        {:name login :roles (into #{} (map keyword (:roles user)))}))))

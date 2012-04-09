@@ -12,3 +12,8 @@
         (check-password "TestPassword" crypt) => true
         (check-password "TestPassworD" crypt) => false))
 
+(def jacek {:login "jacek" :password "secr3t" :roles #{:admin}})
+(with-redefs-fn {#'librarian-clojure.db/db-get-user (fn [_] jacek)
+                 #'librarian-clojure.security/check-password (fn [_ _] true)}
+  #(librarian-clojure.security/log-in {:params {:login "jacek" :password "secr3t"}}))
+
