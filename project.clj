@@ -29,13 +29,14 @@
                      [lein-ring "0.5.4" :exclusions [org.clojure/clojure]]
                      [lein-eclipse "1.0.0" :exclusions [org.clojure/clojure]]
                      [ring-mock "0.1.1" :exclusions [org.clojure/clojure]]
-                     [midje "1.3.1" :exclusions [org.clojure/clojure]]
-                     [lein-midje "1.0.8" :exclusions [org.clojure/clojure]]
-                     [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]
+                     [lein-midje "1.0.8" :exclusions [org.clojure/clojure]]]
   :ring {:handler librarian-clojure.core/app
          :init librarian-clojure.run/run-local-ring}
   :main librarian-clojure.run
   :run-aliases {:local librarian-clojure.run/run-local
                 :heroku librarian-clojure.run/run-heroku}
   :aot :all
-  :profiles {:test {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure]]]}})
+  :profiles {:user {:plugins [[lein-midje "2.0.0-SNAPSHOT"]]}
+             :test {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure]]
+                                   [midje "1.3.1"]
+                                   [com.stuartsierra/lazytest "1.2.3"]]}})
