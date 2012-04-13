@@ -8,7 +8,7 @@
 (def book {:author "Robert C. Martin" :title "Clean Code"})
 
 (fact "get /books -> list all books"
-      (provided (books/get-books) => "Get Books")
+      (against-background (books/get-books) => "Get Books")
       (let [req (request :get "/books")
             response (app req)]
         (:status response) => 200

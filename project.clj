@@ -6,7 +6,6 @@
                                                    ring/ring-core]]
                    [hiccup "0.3.8" :exclusions [org.clojure/clojure]]
                    [congomongo "0.1.8" :exclusions [org.clojure/clojure]]
-                   [midje "1.3.1" :exclusions [org.clojure/clojure]]
                    [org.clojure/data.json "0.1.2" :exclusions [org.clojure/clojure]]
                    [jbcrypt "0.3" :exclusions [org.clojure/clojure]]
                    [sandbar "0.4.0-SNAPSHOT" :exclusions [org.clojure/clojure]]])
@@ -17,7 +16,8 @@
   :url "http://github.com/jaceklaskowski/librarian-clojure"
   :repositories [["sonatype-snapshots"
                   "http://oss.sonatype.org/content/repositories/snapshots/"]
-                 ["stuart" "http://stuartsierra.com/maven2"]]
+                 ["stuart" "http://stuartsierra.com/maven2"]
+                 ["stuart-snapshots" "http://stuartsierra.com/m2snapshots"]]
   :dependencies ~(conj common-deps
                        ; KG 1.4.0 does not seem to work with sandbar
                        ; '[org.clojure/clojure "1.4.0-alpha3"])
@@ -29,7 +29,9 @@
                      [lein-ring "0.5.4" :exclusions [org.clojure/clojure]]
                      [lein-eclipse "1.0.0" :exclusions [org.clojure/clojure]]
                      [ring-mock "0.1.1" :exclusions [org.clojure/clojure]]
-                     [lein-midje "1.0.8" :exclusions [org.clojure/clojure]]]
+                     [midje "1.3.1" :exclusions [org.clojure/clojure]]
+                     [lein-midje "1.0.9"]
+                     [com.stuartsierra/lazytest "1.2.3"]]
   :ring {:handler librarian-clojure.core/app
          :init librarian-clojure.run/run-local-ring}
   :main librarian-clojure.run
@@ -38,5 +40,5 @@
   :aot :all
   :profiles {:user {:plugins [[lein-midje "2.0.0-SNAPSHOT"]]}
              :test {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure]]
-                                   [midje "1.3.1"]
-                                   [com.stuartsierra/lazytest "1.2.3"]]}})
+                                   [midje "1.3.1" :exclusions [org.clojure/clojure]]
+                                   [com.stuartsierra/lazytest "2.0.0-SNAPSHOT"]]}})
