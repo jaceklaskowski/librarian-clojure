@@ -1,7 +1,6 @@
 (ns librarian-clojure.security
   (:import [jBCrypt BCrypt])
-  (:use librarian-clojure.db)
-  (:require [sandbar.auth :as auth]))
+  (:use librarian-clojure.db))
 
 (defn crypt-password [pw]
   (BCrypt/hashpw pw (BCrypt/gensalt 12)))
