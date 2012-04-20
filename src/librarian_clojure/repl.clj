@@ -6,7 +6,7 @@
   (:require [clojure.java.browse :as browse]
             [librarian-clojure.core :as core]))
 
-(def ^{:dynamic true} *server*)
+(def ^:dynamic *server*)
 
 (defn go
   "Start a browser-connected REPL and launch a browser to talk to it."
