@@ -22,12 +22,6 @@ body,textarea,.topbar input {
 <script src="ember-0.9.3.min.js"></script>
 <script src="js/bootstrap-2.0.1.min.js"></script>
 <script>
-/*************************** App state ********************************/
-
-#{lib-booklist}
-
-</script>
-<script>
 function createButton(params) {
 	var button = $('<button>');
 	button.addClass('btn').addClass(params.buttonClass);
@@ -204,12 +198,12 @@ function loginClicked() {
 	if(login.length == 0 || pw.length == 0) {
 		alert('Please provide user name and password');
 	} else {
-		$.ajax('/', {
+		$.ajax('/login', {
 			type: 'POST',
 			data: {"login": login, "password": pw},
 			dataType: 'json',
 			success: function(data) {
-				if(data.successful) {
+				if(data != null && data != undefined && data.successful) {
 					location.reload();
 				} else {
 					$("#login-form .alert").show();
@@ -268,21 +262,7 @@ $(document).ready(function() {
 					</p>
 				</div>
 				<div class="span2">
-					<div  id="login-form">
-						<form>
-							<fieldset>
-								<legend>Log In</legend>
-								<label for="login">User Name:</label><input type="text" name="login" />
-								<label for="password">Password:</label><input type="password" name="password" />
-								<button class="btn" id="btn-login">Log In</button>		
-							</fieldset>
-						</form>
-						
-						<div class="alert alert-error">
-							Login failed
-						</div>
-					</div>
-					
+					#{login-form}
 				</div>
 			</div>
 		</section>
