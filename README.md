@@ -12,7 +12,7 @@ The views (and perhaprs other parts, too) are heavily inspired by the [mametipsu
  
  3. Run MongoDB, e.g. `mongod --dbpath ~/oss/librarian-clojure/data/db`
  
- 4. Go into project directory and execute `lein run`
+ 4. Go into project directory and execute `lein2 run :local`
 
 ## License
 
