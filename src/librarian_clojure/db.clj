@@ -62,4 +62,6 @@
 (defn db-get-user [login]
   (with-mongo db
     (do (prn "fetch " login) (prn (fetch-one :users :where {:login login}))
-    (fetch-one :users :where {:login login}))))
+    (if-let [user (fetch-one :users :where {:login login})]
+      (let [roles-kwset (set (map keyword (:roles user)))]
+        (assoc user :roles roles-kwset))))))
