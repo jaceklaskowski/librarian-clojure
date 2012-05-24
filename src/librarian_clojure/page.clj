@@ -15,8 +15,21 @@
 (defn set-attr [name value]
   (s/replace *template* (re-pattern (str "\\#\\{" name "\\}")) value))
 
+; TODO https://github.com/jaceklaskowski/librarian-clojure/issues/19
+; rename render-login
+; copy index.html to admin.html
+; remove JS and buttons from index.html
+; plug it in from routes.clj
+
 (defn render-login []
   (with-template "/public/index.html"
+    (set-attr "lib-booklist"  (str "var books = " (-> (get-books) json/json-str)))
+    (if-let [user (get-user)]
+      (set-attr "login-form" (str "Hello, " (:login user)))
+      (set-attr "login-form" (read-file "/public/login_form.chtml")))))
+
+(defn render-admin []
+  (with-template "/public/admin.html"
     (set-attr "lib-booklist"  (str "var books = " (-> (get-books) json/json-str)))
     (if-let [user (get-user)]
       (set-attr "login-form" (str "Hello, " (:login user)))

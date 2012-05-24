@@ -25,6 +25,3 @@
   (let [id (Integer. id)]
     (db-delete-book id)
     {:book-deleted id}))
-
-(defn admin-placeholder []
-  (str "TODO "))
