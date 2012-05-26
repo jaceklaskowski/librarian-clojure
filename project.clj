@@ -18,12 +18,10 @@
                  ["stuart" "http://stuartsierra.com/maven2"]
                  ["stuart-snapshots" "http://stuartsierra.com/m2snapshots"]]
   :dependencies ~(conj common-deps
-                       ; KG 1.4.0 does not seem to work with sandbar
-                       ; '[org.clojure/clojure "1.4.0-alpha3"])
-                       '[org.clojure/clojure "1.3.0"])
+                       '[org.clojure/clojure "1.4.0"])
   :repl-init librarian-clojure.repl
-  :multi-deps {"1.4.0" ~(conj common-deps
-                       '[org.clojure/clojure "1.4.0-master-SNAPSHOT"])}
+  :multi-deps {"1.5.0" ~(conj common-deps
+                       '[org.clojure/clojure "1.5.0-master-SNAPSHOT"])}
   :dev-dependencies [[lein-multi "1.1.0" :exclusions [org.clojure/clojure]]
                      [lein-ring "0.6.4" :exclusions [org.clojure/clojure
                                                      hiccup]]
@@ -36,10 +34,10 @@
   :ring {:handler librarian-clojure.core/app
          :init librarian-clojure.run/run-local-ring}
   :main librarian-clojure.run
-  :run-aliases {:local librarian-clojure.run/run-local
-                :heroku librarian-clojure.run/run-heroku}
   :aot :all
   :profiles {:user {:plugins [[lein-midje "2.0.0-SNAPSHOT"]]}
              :test {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure]]
                                    [midje "1.3.1" :exclusions [org.clojure/clojure]]
-                                   [com.stuartsierra/lazytest "2.0.0-SNAPSHOT"]]}})
+                                   [com.stuartsierra/lazytest "2.0.0-SNAPSHOT"]]}
+             :local {:main librarian-clojure.run/run-local}
+             :heroku {:main librarian-clojure.run/run-heroku}})
