@@ -13,7 +13,7 @@
   (DELETE    "/books/:id"         [id]                      (-> (delete-book id) json/json-str))
   (POST      "/books/:id"         [id author title]         (-> (update-book id author title) json/json-str))
   (POST      "/login"             [login password request]  (-> (log-in login password request) json/json-str))
-  (GET       "/admin"             []                        (admin-placeholder))
+  (GET       "/admin"             []                        (render-admin))
   (GET       "/permission-denied" []                        "Access denied")
   (resources "/")
   (ANY       "/*"                 []                        (redirect "/")))
