@@ -35,9 +35,9 @@
          :init librarian-clojure.run/run-local-ring}
   :main librarian-clojure.run
   :aot :all
-  :profiles {:user {:plugins [[lein-midje "2.0.0-SNAPSHOT"]]}
+  :profiles {:user {:plugins [[lein-midje "2.0.0-SNAPSHOT"]]
+                    :aliases {"run-local"  ["run" "-m" "librarian-clojure.run/run-local"]
+                              "run-heroku" ["run" "-m" "librarian-clojure.run/run-heroku"]}}
              :test {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure]]
                                    [midje "1.3.1" :exclusions [org.clojure/clojure]]
-                                   [com.stuartsierra/lazytest "2.0.0-SNAPSHOT"]]}
-             :local {:main librarian-clojure.run/run-local}
-             :heroku {:main librarian-clojure.run/run-heroku}})
+                                   [com.stuartsierra/lazytest "2.0.0-SNAPSHOT"]]}})
