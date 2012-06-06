@@ -22,19 +22,6 @@ body,textarea,.topbar input {
 <script src="ember-0.9.3.min.js"></script>
 <script src="js/bootstrap-2.0.1.min.js"></script>
 <script>
-function createButton(params) {
-	var button = $('<button>');
-	button.addClass('btn').addClass(params.buttonClass);
-	if(params.icon) {
-		var icon = $('<i>').addClass('icon-white').addClass(params.icon)
-		button.append(icon);
-		button.append(' ');
-	}
-	button.append(params.caption);
-	button.click(params.callback);
-	return button;
-}
-
 function appendBook(row, book) {
 	row.attr('data-id', book._id);
 	row.attr('data-author', book.author);
@@ -42,154 +29,10 @@ function appendBook(row, book) {
 	row.append('<td>' + book._id + '</td>');
 	row.append('<td>' + book.author + '</td>');
 	row.append('<td>' + book.title + '</td>');
-	
-	var editButton = createButton({
-		buttonClass: 'btn-primary',
-		icon: 'icon-pencil',
-		caption: 'Edit',
-		callback: editBook(row)});
-	
-	var deleteButton = createButton({
-		buttonClass: 'btn-danger',
-		icon: 'icon-trash',
-		caption: 'Delete',
-		callback: deleteBook(row)});
-	
-	var buttons = $('<td>');
-	buttons.append(editButton);
-	buttons.append(' ');
-	buttons.append(deleteButton);
-	row.append(buttons);
 }
 
 function isExistingBook(row) {
 	return row.attr('data-id');
-}
-
-function getEditedBook(row) {
-	return {
-		_id: row.attr('data-id'), 
-		author: row.find('input[name="author"]').val().trim(), 
-		title: row.find('input[name="title"]').val().trim()};
-}
-
-function validateBook(book) {
-	var errorMsg = '';
-	if(book.author.length == 0) {
-		errorMsg += 'Author is missing\n';
-	}
-	if(book.title.length == 0) {
-		errorMsg += 'Title is missing\n';
-	}
-	if(errorMsg.length > 0) {
-		alert(errorMsg);
-	}
-	return errorMsg.length == 0;
-}
-
-function deleteBook(row) {
-	return function() {
-		var bookId = row.attr('data-id');
-		$.ajax('/books/' + bookId, {
-			type: 'DELETE',
-			dataType: 'json',
-			success: function(book) {
-				row.remove();
-			}
-		});
-	};
-}
-
-
-function performSave(book, row) {
-	$.ajax('/books', {
-		type: 'PUT',
-		data: book,
-		dataType: 'json',
-		success: function(book) {
-			row.empty();
-			appendBook(row, book);
-		}
-	});
-}
-
-function performUpdate(book, row) {
-	$.ajax('/books/' + book._id, {
-		type: 'POST',
-		data: book,
-		dataType: 'json',
-		success: function(book) {
-			row.empty();
-			appendBook(row, book);
-		}
-	});
-}
-
-function updateBook(row) {
-	return function() {
-		var book = getEditedBook(row);
-		if(validateBook(book)) {
-			row.find('input').attr('disabled', true);
-			row.find('button').attr('disabled', true);
-			if(isExistingBook(row)) {
-				performUpdate(book, row);
-			} else {
-				performSave(book, row);
-			}
-		}
-	}
-}
-
-function cancelEdit(row) {
-	return function() {
-		if(isExistingBook(row)) {
-			var book = {
-					_id: row.attr('data-id'), 
-					author: row.attr('data-author'), 
-					title: row.attr('data-title')};
-			row.empty();
-			appendBook(row, book);
-		} else {
-			row.remove();
-		}
-	}
-}
-
-function editBook(row) {
-	return function() {
-		row.empty();
-		if(isExistingBook(row)) {
-			row.append('<td>' + row.attr('data-id') + '</td>');
-			row.append('<td><input type="text" name="author" value="' + row.attr('data-author') + '" /></td>');
-			row.append('<td><input type="text" name="title" value="' + row.attr('data-title') + '" /></td>');
-		} else {
-			row.append('<td>');
-			row.append('<td><input type="text" name="author" /></td>');
-			row.append('<td><input type="text" name="title" /></td>');
-		}
-		var saveButton = createButton({
-			buttonClass: 'btn-success',
-			icon: 'icon-pencil',
-			caption: 'Save',
-			callback: updateBook(row)});
-		
-		var cancelButton = createButton({
-			buttonClass: 'btn-success',
-			caption: 'Cancel',
-			callback: cancelEdit(row)});
-		
-		var buttons = $('<td>');
-		buttons.append(saveButton);
-		buttons.append(' ');
-		buttons.append(cancelButton);
-		row.append(buttons);
-	};
-}
-
-function newBookClicked() {
-	var row = $('<tr>');
-	$('.book-list').append(row);
-	editBook(row).call();
 }
 
 function loginClicked() {
@@ -224,7 +67,6 @@ $(document).ready(function() {
 		});
 	});
 	
-	$('#btn-add-book').click(newBookClicked);
 	$('#btn-login').click(loginClicked);
 	$("#login-form .alert").hide();
 });
@@ -251,15 +93,11 @@ $(document).ready(function() {
 								<th width="5%">Id</th>
 								<th width="35%">Author</th>
 								<th width="35%">Title</th>
-								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody class="book-list">
 						</tbody>
 					</table>
-					<p>
-						<button class="btn btn-success" id="btn-add-book"><i class="icon-plus icon-white"></i> New Book</button>
-					</p>
 				</div>
 				<div class="span2">
 					#{login-form}

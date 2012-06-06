@@ -21,7 +21,7 @@
 ; remove JS and buttons from index.html
 ; plug it in from routes.clj
 
-(defn render-login []
+(defn render-user []
   (with-template "/public/index.html"
     (set-attr "lib-booklist"  (str "var books = " (-> (get-books) json/json-str)))
     (if-let [user (get-user)]
@@ -34,3 +34,8 @@
     (if-let [user (get-user)]
       (set-attr "login-form" (str "Hello, " (:login user)))
       (set-attr "login-form" (read-file "/public/login_form.chtml")))))
+
+(defn render-main []
+  (if (has-role? :admin)
+    (render-admin)
+    (render-user)))
