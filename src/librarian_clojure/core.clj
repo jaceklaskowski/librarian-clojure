@@ -8,7 +8,10 @@
   [[#"/admin.*" :admin]])
 
 (def app
-  (site (wrap-stateful-session ((wrap-security security-policy) routes))))
+  (-> routes
+    (wrap-security security-policy)
+    wrap-stateful-session
+    site))
 
 (defn start-server [port]
   (run-jetty #'app {:port port :join? false}))

@@ -36,9 +36,8 @@
 
 ;; TODO support fancy policies like "has one of roles", "has all of roles" etc.
 
-(defn wrap-security [policy]
-  (fn [handler]
-    (fn [request]
-      (if (authorize-policy request policy)
-        (handler request)
-        (redirect "/permission-denied")))))
+(defn wrap-security [handler policy]
+  (fn [request]
+    (if (authorize-policy request policy)
+      (handler request)
+      (redirect "/permission-denied"))))
