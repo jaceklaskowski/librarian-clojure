@@ -2,10 +2,6 @@
   (:use somnium.congomongo)
   (:import [jBCrypt BCrypt]))
 
-;; FIXME remove dependency on jbcrypt & adding users on launch as soon as we implement "sign up"
-(defn crypt [pw]
-  (BCrypt/hashpw pw (BCrypt/gensalt 12)))
-
 (defn init [env]
   (println "Environment: " env)
   (if (= env :heroku)
@@ -18,10 +14,7 @@
     (do
       (def db
         (make-connection :test
-                       {:host "127.0.0.1" :port 27017}))
-      (with-mongo db
-        (insert! :users {:login "admin" :password (crypt "admin") :roles [:admin :user]})
-        (insert! :users {:login "user" :password (crypt "user") :roles [:user]})))))
+                         {:host "127.0.0.1" :port 27017})))))
 
 (defn- next-seq [coll]
   (with-mongo db
@@ -59,9 +52,16 @@
 
 ;; Users
 
+(defn db-add-user 
+  ([login password]
+    (db-add-user login password []))
+  ([login password roles]
+    (with-mongo db
+      (insert! :users {:login login :password password :roles (concat [:user] roles)}))))
+
 (defn db-get-user [login]
   (with-mongo db
-    (do (prn "fetch " login) (prn (fetch-one :users :where {:login login}))
     (if-let [user (fetch-one :users :where {:login login})]
       (let [roles-kwset (set (map keyword (:roles user)))]
-        (assoc user :roles roles-kwset))))))
+        (assoc user :roles roles-kwset)))))
+

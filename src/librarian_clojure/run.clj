@@ -2,7 +2,8 @@
   "Bootstrap for 'lein run'"
   (:use librarian-clojure.core
         [clojure.java.browse :only (browse-url)])
-  (:require [librarian-clojure.db :as db]))
+  (:require [librarian-clojure.db :as db]
+            [librarian-clojure.security :as security]))
 
 (defn- parse-port [[port] & args]
   (Integer. 
@@ -19,13 +20,16 @@
 
 (defn run-local [& args]
   (db/init :local)
+  (security/init)
   (start-and-browse args "/"))
 
 (defn run-local-ring [& args]
-  (db/init :local))
+  (db/init :local)
+  (security/init))
 
 (defn run-heroku [& args]
   (db/init :heroku)
+  (security/init)
   (start args))
 
 (defn -main [] 

@@ -1,8 +1,11 @@
 (ns librarian-clojure.security
   (:import [jBCrypt BCrypt])
-  (:use librarian-clojure.db
-        [ring.util.response :only (redirect)])
-  (:require [sandbar.stateful-session :as session]))
+  (:use [ring.util.response :only (redirect)])
+  (:require [sandbar.stateful-session :as session]
+            [librarian-clojure.db :as db]
+            [librarian-clojure.security :as security]))
+
+;; BCrypt Helpers
 
 (defn crypt-password [pw]
   (BCrypt/hashpw pw (BCrypt/gensalt 12)))
@@ -10,11 +13,35 @@
 (defn check-password [candidate crypt]
   (BCrypt/checkpw candidate crypt))
 
+;; Init - creates admin/admin superuser
+
+(defn init []
+  (when-not (db/db-get-user "admin")
+    (prn "Creating privileged admin/admin user")
+    (db/db-add-user "admin" (crypt-password "admin") [:admin])))
+
+;; Login/signup form
+
+(defn- success [] {:successful true})
+
+(defn- failure [msg] {:successful false 
+                      :errorDetail msg})
+
 (defn log-in [login password request]
-    (if-let [user (db-get-user login)]
-      (when (check-password password (:password user))
-        (session/session-put! :librarian-user user)
-        {:successful true})))
+  (if-let [user (db/db-get-user login)]
+    (when (check-password password (:password user))
+      (session/session-put! :librarian-user user)
+      (success))
+    (failure "Login failed")))
+
+(defn sign-up [login password request]
+  (if (db/db-get-user login)
+    (failure "Account exists")
+    (do
+      (db/db-add-user login (crypt-password password))
+      (log-in login password request))))
+
+;; Authorization
 
 (defn get-user [] 
   (session/session-get :librarian-user))
@@ -23,6 +50,8 @@
   (if-let [user (get-user)]
     (contains? (:roles user) role)
     false))
+
+;; Ring wrapper for policies
 
 (defn- authorize-line [request line]
   (let [{uri :uri} request 

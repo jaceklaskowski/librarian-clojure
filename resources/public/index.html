@@ -31,10 +31,6 @@ function appendBook(row, book) {
 	row.append('<td>' + book.title + '</td>');
 }
 
-function isExistingBook(row) {
-	return row.attr('data-id');
-}
-
 function loginClicked() {
 	var login = $("#login-form").find('input[name="login"]').val().trim();
 	var pw = $("#login-form").find('input[name="password"]').val().trim();
@@ -49,12 +45,46 @@ function loginClicked() {
 				if(data != null && data != undefined && data.successful) {
 					location.reload();
 				} else {
-					$("#login-form .alert").show();
+					showError($("#login-form"), data.errorDetail);
 				}
 			}
 		});
 	}
 	return false;
+}
+
+function signupClicked() {
+	var login = $("#signup-form").find('input[name="login"]').val().trim();
+	var pw = $("#signup-form").find('input[name="password"]').val().trim();
+	var pw2 = $("#signup-form").find('input[name="password2"]').val().trim();
+	if(login.length == 0 || pw.length == 0) {
+		alert('Please provide user name and password');
+	} else if(pw != pw2) {
+		alert('Please type the same password in both fields');
+	} else {
+		$.ajax('/signup', {
+			type: 'POST',
+			data: {"login": login, "password": pw},
+			dataType: 'json',
+			success: function(data) {
+				if(data != null && data != undefined && data.successful) {
+					location.reload();
+				} else {
+					showError($("#signup-form"), data.errorDetail);
+				}
+			}
+		});
+	}
+	return false;
+}
+
+function hideErrors() {
+	$("#login-form-container .alert-error").remove();
+}
+
+function showError(form, message) {
+	hideErrors();
+	$("<div />").addClass("alert alert-error").html(message).insertAfter(form);
 }
 
 $(document).ready(function() {
@@ -68,7 +98,8 @@ $(document).ready(function() {
 	});
 	
 	$('#btn-login').click(loginClicked);
-	$("#login-form .alert").hide();
+	$('#btn-signup').click(signupClicked);
+	hideErrors();
 });
 </script>
 </head>
