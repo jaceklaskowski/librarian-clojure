@@ -17,28 +17,28 @@
 
 (fact "Security with no policy"
       (let [policy []
-            app ((wrap-security policy) handler)
+            app (wrap-security handler policy)
             resp (app {:uri "/admin"})]
         (:body resp) => "Hello, world"))
 
 (fact "Security with policy and match on role"
       (against-background (get-user) => {:login "Admin" :roles #{:admin}})
       (let [policy [[#"/admin.*" :admin]]
-            app ((wrap-security policy) handler)
+            app (wrap-security handler policy)
             resp (app {:uri "/admin"})]
         (:body resp) => "Hello, world"))
 
 (fact "Security with policy on different URL"
       (against-background (get-user) => {:login "Admin" :roles #{:poorguy}})
       (let [policy [[#"/admin.*" :admin]]
-            app ((wrap-security policy) handler)
+            app (wrap-security handler policy)
             resp (app {:uri "/poorguys"})]
         (:body resp) => "Hello, world"))
 
 (fact "Security with policy and no match"
       (against-background (get-user) => {:login "Admin" :roles #{:poorguy}})
       (let [policy [[#"/admin.*" :admin]]
-            app ((wrap-security policy) handler)
+            app (wrap-security handler policy)
             resp (app {:uri "/admin"})]
         resp => (redirect "/permission-denied")))
 
