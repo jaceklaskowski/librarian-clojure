@@ -214,6 +214,21 @@ function loginClicked() {
 	return false;
 }
 
+function logoutClicked() {
+	$.ajax('/logout', {
+		type: 'POST',
+		dataType: 'json',
+		success: function(data) {
+			if(data != null && data != undefined && data.successful) {
+				location.reload();
+			} else {
+				$("#login-form .alert").show();
+			}
+		}
+	});
+	return false;
+}
+
 $(document).ready(function() {
 	$.getJSON('/books', function(json) {
 		var bookTable = $('.book-list');
@@ -226,6 +241,7 @@ $(document).ready(function() {
 	
 	$('#btn-add-book').click(newBookClicked);
 	$('#btn-login').click(loginClicked);
+	$('#btn-logout').click(logoutClicked);
 	$("#login-form .alert").hide();
 });
 </script>
@@ -263,6 +279,9 @@ $(document).ready(function() {
 				</div>
 				<div class="span2">
 					#{login-form}
+					<div id="login-form-container">
+						<button class="btn" id="btn-logout"><i class="icon-off"></i> Log Out</button>		
+					</div>
 				</div>
 			</div>
 		</section>

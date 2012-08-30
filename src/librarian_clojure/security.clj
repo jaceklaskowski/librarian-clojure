@@ -34,6 +34,11 @@
       (success))
     (failure "Login failed")))
 
+(defn log-out []
+  (println "Logging out...")
+  (session/destroy-session!)
+  (success))
+
 (defn sign-up [login password request]
   (if (db/db-get-user login)
     (failure "Account exists")
