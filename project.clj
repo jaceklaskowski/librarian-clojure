@@ -34,6 +34,7 @@
   :ring {:handler librarian-clojure.core/app
          :init librarian-clojure.run/run-local-ring}
   :main librarian-clojure.run
+  :min-lein-version "2.0.0"
   :aot :all
   :profiles {:user {:plugins [[lein-midje "2.0.0-SNAPSHOT"]]
                     :aliases {"run-local"  ["run" "-m" "librarian-clojure.run/run-local"]}}
