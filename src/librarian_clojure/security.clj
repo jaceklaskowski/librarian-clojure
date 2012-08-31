@@ -35,7 +35,6 @@
     (failure "Login failed")))
 
 (defn log-out []
-  (println "Logging out...")
   (session/destroy-session!)
   (success))
 

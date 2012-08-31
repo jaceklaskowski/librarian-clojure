@@ -192,38 +192,12 @@ function newBookClicked() {
 	editBook(row).call();
 }
 
-function loginClicked() {
-	var login = $("#login-form").find('input[name="login"]').val().trim();
-	var pw = $("#login-form").find('input[name="password"]').val().trim();
-	if(login.length == 0 || pw.length == 0) {
-		alert('Please provide user name and password');
-	} else {
-		$.ajax('/login', {
-			type: 'POST',
-			data: {"login": login, "password": pw},
-			dataType: 'json',
-			success: function(data) {
-				if(data != null && data != undefined && data.successful) {
-					location.reload();
-				} else {
-					$("#login-form .alert").show();
-				}
-			}
-		});
-	}
-	return false;
-}
-
 function logoutClicked() {
 	$.ajax('/logout', {
 		type: 'POST',
 		dataType: 'json',
 		success: function(data) {
-			if(data != null && data != undefined && data.successful) {
-				location.reload();
-			} else {
-				$("#login-form .alert").show();
-			}
+			location.reload();
 		}
 	});
 	return false;
@@ -240,7 +214,6 @@ $(document).ready(function() {
 	});
 	
 	$('#btn-add-book').click(newBookClicked);
-	$('#btn-login').click(loginClicked);
 	$('#btn-logout').click(logoutClicked);
 	$("#login-form .alert").hide();
 });

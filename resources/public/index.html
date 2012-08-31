@@ -87,6 +87,17 @@ function showError(form, message) {
 	$("<div />").addClass("alert alert-error").html(message).insertAfter(form);
 }
 
+function logoutClicked() {
+	$.ajax('/logout', {
+		type: 'POST',
+		dataType: 'json',
+		success: function(data) {
+			location.reload();
+		}
+	});
+	return false;
+}
+
 $(document).ready(function() {
 	$.getJSON('/books', function(json) {
 		var bookTable = $('.book-list');
@@ -99,6 +110,7 @@ $(document).ready(function() {
 	
 	$('#btn-login').click(loginClicked);
 	$('#btn-signup').click(signupClicked);
+	$('#btn-logout').click(logoutClicked);
 	hideErrors();
 });
 </script>
@@ -132,6 +144,9 @@ $(document).ready(function() {
 				</div>
 				<div class="span2">
 					#{login-form}
+					<div id="login-form-container">
+						<button class="btn" id="btn-logout"><i class="icon-off"></i> Log Out</button>		
+					</div>
 				</div>
 			</div>
 		</section>
