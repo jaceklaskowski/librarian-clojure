@@ -3,32 +3,32 @@
   (:require [clojure.string :as s]
             [clojure.data.json :as json]))
 
-(def ^:dynamic *template*)
-
 (defn read-file [path]
   (slurp (.getResourceAsStream Object path)))
 
-(defmacro with-template [path & body]
-  `(binding [*template* (read-file ~path)]
-     ~@body))
-
-(defn set-attr [name value]
-  (s/replace *template* (re-pattern (str "\\#\\{" name "\\}")) value))
+(defn set-attr [template name value]
+  (s/replace template (re-pattern (str "\\#\\{" name "\\}")) value))
 
 (defn greet-user [user]
   (str "Hello, " (:login user)))
 
 (defn render-user []
-  (with-template "/public/index.html"
-    (set-attr "lib-booklist"  (str "var books = " (-> (get-books) json/json-str)))
+  (let [template (read-file "/public/index.html")]
+    (set-attr template "lib-booklist"  (str "var books = " (-> (get-books) json/json-str)))
     (if-let [user (get-user)]
-      (set-attr "login-form" (greet-user user))
-      (set-attr "login-form" (read-file "/public/login_form.chtml")))))
+      (-> template
+        (set-attr "login-form" (greet-user user))
+        (set-attr "logout-form" (read-file "/public/logout-form.html")))
+      (-> template
+        (set-attr "login-form" (read-file "/public/login_form.chtml"))
+        (set-attr "logout-form" "")))))
 
 (defn render-admin []
-  (with-template "/public/admin.html"
-    (set-attr "lib-booklist"  (str "var books = " (-> (get-books) json/json-str)))
-    (set-attr "login-form" (greet-user (get-user)))))
+  (let [template (read-file "/public/admin.html")]
+    (-> template
+      (set-attr "lib-booklist"  (str "var books = " (-> (get-books) json/json-str)))
+      (set-attr "login-form" (greet-user (get-user)))
+      (set-attr "logout-form" (read-file "/public/logout-form.html")))))
 
 (defn render-main []
   (if (has-role? :admin)
