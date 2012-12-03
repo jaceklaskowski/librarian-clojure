@@ -14,6 +14,8 @@ The views (and perhaps other parts, too) are heavily inspired by the [mametipsum
  
  4. Go into project directory and execute `lein2 run-local`
 
+A browser window shows up with the welcome page of the application.
+
 ## License
 
 Copyright (C) 2012 Konrad Garus & Jacek Laskowski
