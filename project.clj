@@ -9,7 +9,6 @@
                    [org.clojure/data.json "0.1.2" :exclusions [org.clojure/clojure]]
                    [jbcrypt "0.3" :exclusions [org.clojure/clojure]]])
 
-;; project definition for multi-version testing - consult :multi-deps option
 (defproject librarian-clojure "0.0.1-SNAPSHOT"
   :description "Book manager in Clojure"
   :url "http://github.com/jaceklaskowski/librarian-clojure"
@@ -20,8 +19,6 @@
   :dependencies ~(conj common-deps
                        '[org.clojure/clojure "1.4.0"])
   :repl-init librarian-clojure.repl
-  :multi-deps {"1.5.0" ~(conj common-deps
-                       '[org.clojure/clojure "1.5.0-master-SNAPSHOT"])}
   :dev-dependencies [[lein-multi "1.1.0" :exclusions [org.clojure/clojure]]
                      [lein-ring "0.6.4" :exclusions [org.clojure/clojure
                                                      hiccup]]
@@ -41,4 +38,8 @@
              :dev {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure
                                                                   hiccup]]
                                   [midje "1.3.1" :exclusions [org.clojure/clojure]]
-                                  [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]}})
+                                  [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]}
+             :1.5 {:dependencies [[org.clojure/clojure "1.5.0-master-SNAPSHOT"]]}}
+  :aliases {"dev" ["with-profile" "dev"]
+            "all" ["with-profile" "dev,1.5"]}
+  :warn-on-reflection true)
