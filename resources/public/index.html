@@ -1,129 +1,62 @@
 <!--
    - Heavily inspired by https://github.com/tvaughan/mametipsum
+   - http://twitter.github.com/bootstrap/examples/hero.html contributed a lot recently
    -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Librarian</title>
+<title>Librarian (in Clojure)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Book manager for Warszawa Java User Group in Clojure">
+<meta name="author" content="Konrad Garus + Jacek Laskowski">
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 <style type="text/css">
-body {
-	padding-top: 10px;
-	padding-bottom: 40px;
-}
-
-body,textarea,.topbar input {
-	font-family: "Droid Sans", "Helvetica Neue", Helvetica, Arial,
-		sans-serif;
-}
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
 </style>
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
-<script src="js/jquery-1.7.1.min.js"></script>
-<script src="ember-0.9.3.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script>
-function appendBook(row, book) {
-	row.attr('data-id', book._id);
-	row.attr('data-author', book.author);
-	row.attr('data-title', book.title);
-	row.append('<td>' + book._id + '</td>');
-	row.append('<td>' + book.author + '</td>');
-	row.append('<td>' + book.title + '</td>');
-}
-
-function loginClicked() {
-	var login = $("#login-form").find('input[name="login"]').val().trim();
-	var pw = $("#login-form").find('input[name="password"]').val().trim();
-	if(login.length == 0 || pw.length == 0) {
-		alert('Please provide user name and password');
-	} else {
-		$.ajax('/login', {
-			type: 'POST',
-			data: {"login": login, "password": pw},
-			dataType: 'json',
-			success: function(data) {
-				if(data != null && data != undefined && data.successful) {
-					location.reload();
-				} else {
-					showError($("#login-form"), data.errorDetail);
-				}
-			}
-		});
-	}
-	return false;
-}
-
-function signupClicked() {
-	var login = $("#signup-form").find('input[name="login"]').val().trim();
-	var pw = $("#signup-form").find('input[name="password"]').val().trim();
-	var pw2 = $("#signup-form").find('input[name="password2"]').val().trim();
-	if(login.length == 0 || pw.length == 0) {
-		alert('Please provide user name and password');
-	} else if(pw != pw2) {
-		alert('Please type the same password in both fields');
-	} else {
-		$.ajax('/signup', {
-			type: 'POST',
-			data: {"login": login, "password": pw},
-			dataType: 'json',
-			success: function(data) {
-				if(data != null && data != undefined && data.successful) {
-					location.reload();
-				} else {
-					showError($("#signup-form"), data.errorDetail);
-				}
-			}
-		});
-	}
-	return false;
-}
-
-function hideErrors() {
-	$("#login-form-container .alert-error").remove();
-}
-
-function showError(form, message) {
-	hideErrors();
-	$("<div />").addClass("alert alert-error").html(message).insertAfter(form);
-}
-
-function logoutClicked() {
-	$.ajax('/logout', {
-		type: 'POST',
-		dataType: 'json',
-		success: function(data) {
-			location.reload();
-		}
-	});
-	return false;
-}
-
-$(document).ready(function() {
-	$.getJSON('/books', function(json) {
-		var bookTable = $('.book-list');
-		$.each(json, function(key, val) {
-			var row = $('<tr>');
-			appendBook(row, val);
-			bookTable.append(row);
-		});
-	});
-	
-	$('#btn-login').click(loginClicked);
-	$('#btn-signup').click(signupClicked);
-	$('#btn-logout').click(logoutClicked);
-	hideErrors();
-});
-</script>
 </head>
+
 <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Librarian-Clojure</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="https://github.com/jaceklaskowski/librarian-clojure">Project at GitHub</a></li>
+            </ul>
+            <form class="navbar-form pull-right">
+              <input class="span2" type="text" placeholder="Email">
+              <input class="span2" type="password" placeholder="Password">
+              <button type="submit" class="btn">Sign in</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
 	<div class="container">
-		<div class="page-header">
-			<h1>
-				<a href="/">Librarian-Clojure</a> <small>a small web application for managing books in Clojure</small>
-			</h1>
-		</div>
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1>Welcome to Librarian-Clojure project!</h1>
+        <p>Book manager for <a href="http://warszawa.jug.pl">Warszawa Java User Group</a> written in <a href="http://clojure.org">Clojure</a>.</p>
+        <p><a href="https://github.com/jaceklaskowski/librarian-clojure" class="btn btn-primary btn-large">Learn more (at GitHub) &raquo;</a></p>
+      </div>
+
 		<section id="main">
 			<div class="row">
 				<div class="span10">
@@ -150,7 +83,11 @@ $(document).ready(function() {
 				</div>
 			</div>
 		</section>
+
+		<hr>
+
 		<footer>
+			<p>&copy; Konrad Garus, Jacek Laskowski 2012</p>
 			<!-- https://github.com/markdotto/github-buttons/#readme -->
 			<iframe src="http://bit.ly/ghbtns-fork-count" allowtransparency="true" frameborder="0" scrolling="0" width="132px" height="20px"></iframe>
 			<div class="pull-right">
@@ -158,5 +95,102 @@ $(document).ready(function() {
 			</div>
 		</footer>
 	</div>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="js/jquery-1.7.1.min.js"></script>
+	<script src="ember-0.9.3.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script>
+	function appendBook(row, book) {
+		row.attr('data-id', book._id);
+		row.attr('data-author', book.author);
+		row.attr('data-title', book.title);
+		row.append('<td>' + book._id + '</td>');
+		row.append('<td>' + book.author + '</td>');
+		row.append('<td>' + book.title + '</td>');
+	}
+
+	function loginClicked() {
+		var login = $("#login-form").find('input[name="login"]').val().trim();
+		var pw = $("#login-form").find('input[name="password"]').val().trim();
+		if(login.length == 0 || pw.length == 0) {
+			alert('Please provide user name and password');
+		} else {
+			$.ajax('/login', {
+				type: 'POST',
+				data: {"login": login, "password": pw},
+				dataType: 'json',
+				success: function(data) {
+					if(data != null && data != undefined && data.successful) {
+						location.reload();
+					} else {
+						showError($("#login-form"), data.errorDetail);
+					}
+				}
+			});
+		}
+		return false;
+	}
+
+	function signupClicked() {
+		var login = $("#signup-form").find('input[name="login"]').val().trim();
+		var pw = $("#signup-form").find('input[name="password"]').val().trim();
+		var pw2 = $("#signup-form").find('input[name="password2"]').val().trim();
+		if(login.length == 0 || pw.length == 0) {
+			alert('Please provide user name and password');
+		} else if(pw != pw2) {
+			alert('Please type the same password in both fields');
+		} else {
+			$.ajax('/signup', {
+				type: 'POST',
+				data: {"login": login, "password": pw},
+				dataType: 'json',
+				success: function(data) {
+					if(data != null && data != undefined && data.successful) {
+						location.reload();
+					} else {
+						showError($("#signup-form"), data.errorDetail);
+					}
+				}
+			});
+		}
+		return false;
+	}
+
+	function hideErrors() {
+		$("#login-form-container .alert-error").remove();
+	}
+
+	function showError(form, message) {
+		hideErrors();
+		$("<div />").addClass("alert alert-error").html(message).insertAfter(form);
+	}
+
+	function logoutClicked() {
+		$.ajax('/logout', {
+			type: 'POST',
+			dataType: 'json',
+			success: function(data) {
+				location.reload();
+			}
+		});
+		return false;
+	}
+
+	$(document).ready(function() {
+		$.getJSON('/books', function(json) {
+			var bookTable = $('.book-list');
+			$.each(json, function(key, val) {
+				var row = $('<tr>');
+				appendBook(row, val);
+				bookTable.append(row);
+			});
+		});
+		
+		$('#btn-login').click(loginClicked);
+		$('#btn-signup').click(signupClicked);
+		$('#btn-logout').click(logoutClicked);
+		hideErrors();
+	});
+	</script>
 </body>
 </html>

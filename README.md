@@ -1,8 +1,8 @@
 # librarian-clojure [![Build Status](https://secure.travis-ci.org/jaceklaskowski/librarian-clojure.png)](http://travis-ci.org/jaceklaskowski/librarian-clojure)
 
-Book manager for [Warszawa Java User Group](http://warszawa.jug.pl).
+Book manager for [Warszawa Java User Group](http://warszawa.jug.pl) written in [Clojure](http://clojure.org).
 
-The views (and perhaps other parts, too) are heavily inspired by the [mametipsum](https://github.com/tvaughan/mametipsum) project.
+The views (and perhaps other parts, too) are heavily inspired by the [mametipsum](https://github.com/tvaughan/mametipsum) and the [Basic marketing site from Bootstrap's Examples] (http://twitter.github.com/bootstrap/examples/hero.html) projects.
 
 ## Running the project
 
@@ -18,6 +18,6 @@ A browser window shows up with the welcome page of the application.
 
 ## License
 
-Copyright (C) 2012 Konrad Garus & Jacek Laskowski
+Copyright (C) 2012 Konrad Garus, Jacek Laskowski
 
 Distributed under the Eclipse Public License, the same as Clojure.
