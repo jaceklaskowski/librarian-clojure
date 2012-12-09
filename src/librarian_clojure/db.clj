@@ -43,12 +43,9 @@
   (with-mongo db
     (update! :books {:_id id} book)))
 
-(defn db-delete-book [id]
+(defn db-delete-book [^Integer id]
   (with-mongo db
-    (try
-      (destroy! :books {:_id (Integer. id)})
-      (catch NumberFormatException nfe
-        (destroy! :books {:_id (object-id id)})))))
+    (destroy! :books {:_id id})))
 
 ;; Users
 

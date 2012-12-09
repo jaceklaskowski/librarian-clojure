@@ -1,6 +1,5 @@
 (ns librarian-clojure.books
-  (:use librarian-clojure.db
-        [somnium.congomongo :only (object-id)]) ;; TODO: Move to librarian-clojure.db and remove
+  (:use librarian-clojure.db)
   (:require [clojure.data.json :as json]))
 
 ;; https://github.com/clojure/data.json/blob/master/src/main/clojure/clojure/data/json.clj
@@ -17,11 +16,11 @@
   (db-add-book {:author author :title title}))
 
 (defn update-book [id author title]
-  (let [id (Integer. id)]
+  (let [id (Integer/parseInt id)]
     (db-update-book id {:author author :title title})
     (db-get-book id)))
 
 (defn delete-book [id]
-  (let [id (Integer. id)]
+  (let [id (Integer/parseInt id)]
     (db-delete-book id)
     {:book-deleted id}))
