@@ -43,7 +43,7 @@
   (with-mongo db
     (update! :books {:_id id} book)))
 
-(defn db-delete-book [^Integer id]
+(defn db-delete-book [id]
   (with-mongo db
     (destroy! :books {:_id id})))
 
