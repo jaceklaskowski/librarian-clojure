@@ -6,11 +6,9 @@
             [librarian-clojure.security :as security]))
 
 (defn- parse-port [[port] & args]
-  (try
-    (Integer/parseInt
-     (or port (get (System/getenv) "PORT")))
-    (catch NumberFormatException nfe
-      8080)))
+  (if-let [port-str (or port (get (System/getenv) "PORT"))]
+    (Integer/parseInt port-str)
+    8080))
 
 (defn- start-and-browse [args url]
   (let [port (parse-port args)]
