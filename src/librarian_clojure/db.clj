@@ -45,10 +45,7 @@
 
 (defn db-delete-book [id]
   (with-mongo db
-    (try
-      (destroy! :books {:_id (Integer. id)})
-      (catch NumberFormatException nfe
-        (destroy! :books {:_id (object-id id)})))))
+    (destroy! :books {:_id id})))
 
 ;; Users
 

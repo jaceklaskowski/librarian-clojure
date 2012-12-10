@@ -6,8 +6,9 @@
             [librarian-clojure.security :as security]))
 
 (defn- parse-port [[port] & args]
-  (Integer. 
-    (or port (get (System/getenv) "PORT") 8080)))
+  (if-let [port-str (or port (get (System/getenv) "PORT"))]
+    (Integer/parseInt port-str)
+    8080))
 
 (defn- start-and-browse [args url]
   (let [port (parse-port args)]

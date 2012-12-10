@@ -6,7 +6,7 @@
   (:require [clojure.java.browse :as browse]
             [librarian-clojure.core :as core]))
 
-(def ^:dynamic *server*)
+(def ^:dynamic ^org.eclipse.jetty.server.Server *server*)
 
 (defn go
   "Start a browser-connected REPL and launch a browser to talk to it."
@@ -18,7 +18,7 @@
   (tools/cljs-repl))
   ;;
   (let [port (Integer/parseInt (get (System/getenv) "PORT" "8080"))]
-    (def *server* (core/start-server port))
+    (alter-var-root *server* (fn [_] (core/start-server port)))
     (browse/browse-url (str "http://localhost:" port))))
 
 (defn stop
