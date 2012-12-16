@@ -7,7 +7,8 @@
                    [hiccup "1.0.0-RC2" :exclusions [org.clojure/clojure]] 
                    [congomongo "0.1.8" :exclusions [org.clojure/clojure]]
                    [org.clojure/data.json "0.1.2" :exclusions [org.clojure/clojure]]
-                   [jbcrypt "0.3" :exclusions [org.clojure/clojure]]])
+                   [jbcrypt "0.3" :exclusions [org.clojure/clojure]]
+                   [com.cemerick/friend "0.1.2" :exclusions [org.clojure/clojure]]])
 
 (defproject librarian-clojure "0.0.1-SNAPSHOT"
   :description "Book manager in Clojure"
