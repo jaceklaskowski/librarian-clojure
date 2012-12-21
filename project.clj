@@ -33,13 +33,12 @@
   :main librarian-clojure.run
   :min-lein-version "2.0.0"
   :aot :all
-  :profiles {:user {:plugins [[lein-midje "2.0.0-SNAPSHOT"]]
-                    :aliases {"run-local"  ["run" "-m" "librarian-clojure.run/run-local"]}}
-             :dev {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure
+  :profiles {:dev {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure
                                                                   hiccup]]
                                   [midje "1.3.1" :exclusions [org.clojure/clojure]]
                                   [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]}
              :1.5 {:dependencies [[org.clojure/clojure "1.5.0-master-SNAPSHOT"]]}}
   :aliases {"dev" ["with-profile" "dev"]
-            "all" ["with-profile" "dev,1.5"]}
+            "all" ["with-profile" "dev,1.5"]
+            "run-local"  ["run" "-m" "librarian-clojure.run/run-local"]}
   :warn-on-reflection true)
