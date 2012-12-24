@@ -2,7 +2,8 @@
   (:use [cemerick.friend.credentials :only (hash-bcrypt)])
   (:require [sandbar.stateful-session :as session]
             [librarian-clojure.db :as db]
-            [cemerick.friend :as friend]))
+            [cemerick.friend :as friend]
+            [clojure.data.json :as json]))
 
   
 ;; Init - creates admin/admin superuser
@@ -29,7 +30,7 @@
   "Request is passed explicitly - it's strongly encouraged by friend
 even though there's an option of using internal dynamic binding which
 should contain identity in the context current on-the-fly request."
-  (friend/current-authentication request))
+  (-> request friend/identity friend/current-authentication))
 
 (defn has-role? [request role]
   (friend/authorized? [role] (friend/identity request)))
@@ -38,16 +39,22 @@ should contain identity in the context current on-the-fly request."
 
 (defn login-failure-handler
   [request]
-  (failure "Login failed"))
+  {:body (-> (failure "Login failed") json/json-str)})
 
 (defn unauthorized-handler [request]
   [request]
   {:status 403 :body "Access denied"})
 
-(defn signup-handler [login password request]
+(defn signup-workflow-handler [login password success-fn]
   (if (get-user-by-login login)
     (failure "Account exists")
-    (db/db-add-user login (hash-bcrypt password))))
+    (do
+      (db/db-add-user login (hash-bcrypt password))
+      (success-fn (get-user-by-login login)))))
+
+(defn signup-handler
+  []
+  (success))
 
 (defn login-handler
   "Succesful login handler must be put under POST /login route."

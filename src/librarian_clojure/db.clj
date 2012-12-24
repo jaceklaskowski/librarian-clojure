@@ -57,8 +57,9 @@
       (insert! :users {:login login :password password :roles (concat [:user] roles)}))))
 
 (defn db-get-user [login]
-  (with-mongo db
-    (if-let [user (fetch-one :users :where {:login login})]
-      (let [roles-kwset (set (map keyword (:roles user)))]
-        (assoc user :roles roles-kwset)))))
+  (when login
+    (with-mongo db
+      (if-let [user (fetch-one :users :where {:login login})]
+        (let [roles-kwset (set (map keyword (:roles user)))]
+          (assoc user :roles roles-kwset))))))
 

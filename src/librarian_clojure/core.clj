@@ -1,6 +1,7 @@
 (ns librarian-clojure.core
-  (:use [librarian-clojure routes security]
-        [librarian-clojure.friend :only (custom-interactive-form)]
+  (:use [librarian-clojure.routes :only (routes)]
+        [librarian-clojure.friend :only (custom-interactive-form
+                                         signup-workflow)]
         [compojure.handler :only (site)]
         [ring.adapter.jetty :only (run-jetty)]
         [sandbar.stateful-session :only (wrap-stateful-session)])
@@ -13,11 +14,12 @@
   (-> routes
       (friend/authenticate
        {:credential-fn (partial creds/bcrypt-credential-fn security/get-user-by-login)
-        :unauthorized-handler #'security/unauthorized-handler
+        :unauthorized-handler security/unauthorized-handler
         :workflows [(custom-interactive-form
                      :username-field :login
                      :redirect-on-auth? false
-                     :login-failure-handler #'security/login-failure-handler)]})
+                     :login-failure-handler #'security/login-failure-handler)
+                    signup-workflow]})
       wrap-stateful-session
       site))
 
