@@ -3,12 +3,13 @@
   (:use [compojure.core :only (GET POST PUT DELETE ANY defroutes)]
         [compojure.route :only (resources not-found)]
         [ring.util.response :only (redirect)]
-        [librarian-clojure books page])
+        [librarian-clojure books])
   (:require [clojure.data.json :as json]
-            [librarian-clojure.security :as security]))
+            [librarian-clojure.security :as security]
+            [librarian-clojure.page :as page]))
 
 (defroutes routes
-  (GET       "/"                  []                        (render-main))
+  (GET       "/"                  []                        (page/render-main))
   (GET       "/books"             []                        (-> (get-books) json/json-str))
   (PUT       "/books"             [author title]            (-> (add-book author title) json/json-str))
   (DELETE    "/books/:id"         [id]                      (-> (delete-book id) json/json-str))

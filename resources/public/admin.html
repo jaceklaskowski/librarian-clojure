@@ -1,234 +1,60 @@
 <!--
    - Heavily inspired by https://github.com/tvaughan/mametipsum
+   - http://twitter.github.com/bootstrap/examples/hero.html contributed a lot recently
    -->
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Librarian</title>
+<title>Librarian (in Clojure)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Book manager for Warszawa Java User Group in Clojure">
+<meta name="author" content="Konrad Garus, Jacek Laskowski">
 <link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 <style type="text/css">
-body {
-	padding-top: 10px;
-}
-
-body,textarea,.topbar input {
-	font-family: "Droid Sans", "Helvetica Neue", Helvetica, Arial,
-		sans-serif;
-}
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
 </style>
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
-<script src="js/jquery-1.7.1.min.js"></script>
-<script src="ember-0.9.3.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script>
-function createButton(params) {
-	var button = $('<button>');
-	button.addClass('btn').addClass(params.buttonClass);
-	if(params.icon) {
-		var icon = $('<i>').addClass('icon-white').addClass(params.icon)
-		button.append(icon);
-		button.append(' ');
-	}
-	button.append(params.caption);
-	button.click(params.callback);
-	return button;
-}
-
-function appendBook(row, book) {
-	row.attr('data-id', book._id);
-	row.attr('data-author', book.author);
-	row.attr('data-title', book.title);
-	row.append('<td>' + book._id + '</td>');
-	row.append('<td>' + book.author + '</td>');
-	row.append('<td>' + book.title + '</td>');
-	
-	var editButton = createButton({
-		buttonClass: 'btn-primary',
-		icon: 'icon-pencil',
-		caption: 'Edit',
-		callback: editBook(row)});
-	
-	var deleteButton = createButton({
-		buttonClass: 'btn-danger',
-		icon: 'icon-trash',
-		caption: 'Delete',
-		callback: deleteBook(row)});
-	
-	var buttons = $('<td>');
-	buttons.append(editButton);
-	buttons.append(' ');
-	buttons.append(deleteButton);
-	row.append(buttons);
-}
-
-function isExistingBook(row) {
-	return row.attr('data-id');
-}
-
-function getEditedBook(row) {
-	return {
-		_id: row.attr('data-id'), 
-		author: row.find('input[name="author"]').val().trim(), 
-		title: row.find('input[name="title"]').val().trim()};
-}
-
-function validateBook(book) {
-	var errorMsg = '';
-	if(book.author.length == 0) {
-		errorMsg += 'Author is missing\n';
-	}
-	if(book.title.length == 0) {
-		errorMsg += 'Title is missing\n';
-	}
-	if(errorMsg.length > 0) {
-		alert(errorMsg);
-	}
-	return errorMsg.length == 0;
-}
-
-function deleteBook(row) {
-	return function() {
-		var bookId = row.attr('data-id');
-		$.ajax('/books/' + bookId, {
-			type: 'DELETE',
-			dataType: 'json',
-			success: function(book) {
-				row.remove();
-			}
-		});
-	};
-}
-
-
-function performSave(book, row) {
-	$.ajax('/books', {
-		type: 'PUT',
-		data: book,
-		dataType: 'json',
-		success: function(book) {
-			row.empty();
-			appendBook(row, book);
-		}
-	});
-}
-
-function performUpdate(book, row) {
-	$.ajax('/books/' + book._id, {
-		type: 'POST',
-		data: book,
-		dataType: 'json',
-		success: function(book) {
-			row.empty();
-			appendBook(row, book);
-		}
-	});
-}
-
-function updateBook(row) {
-	return function() {
-		var book = getEditedBook(row);
-		if(validateBook(book)) {
-			row.find('input').attr('disabled', true);
-			row.find('button').attr('disabled', true);
-			if(isExistingBook(row)) {
-				performUpdate(book, row);
-			} else {
-				performSave(book, row);
-			}
-		}
-	}
-}
-
-function cancelEdit(row) {
-	return function() {
-		if(isExistingBook(row)) {
-			var book = {
-					_id: row.attr('data-id'), 
-					author: row.attr('data-author'), 
-					title: row.attr('data-title')};
-			row.empty();
-			appendBook(row, book);
-		} else {
-			row.remove();
-		}
-	}
-}
-
-function editBook(row) {
-	return function() {
-		row.empty();
-		if(isExistingBook(row)) {
-			row.append('<td>' + row.attr('data-id') + '</td>');
-			row.append('<td><input type="text" name="author" value="' + row.attr('data-author') + '" /></td>');
-			row.append('<td><input type="text" name="title" value="' + row.attr('data-title') + '" /></td>');
-		} else {
-			row.append('<td>');
-			row.append('<td><input type="text" name="author" /></td>');
-			row.append('<td><input type="text" name="title" /></td>');
-		}
-		var saveButton = createButton({
-			buttonClass: 'btn-success',
-			icon: 'icon-pencil',
-			caption: 'Save',
-			callback: updateBook(row)});
-		
-		var cancelButton = createButton({
-			buttonClass: 'btn-success',
-			caption: 'Cancel',
-			callback: cancelEdit(row)});
-		
-		var buttons = $('<td>');
-		buttons.append(saveButton);
-		buttons.append(' ');
-		buttons.append(cancelButton);
-		row.append(buttons);
-	};
-}
-
-function newBookClicked() {
-	var row = $('<tr>');
-	$('.book-list').append(row);
-	editBook(row).call();
-}
-
-function logoutClicked() {
-	$.ajax('/logout', {
-		type: 'POST',
-		dataType: 'json',
-		success: function(data) {
-			location.reload();
-		}
-	});
-	return false;
-}
-
-$(document).ready(function() {
-	$.getJSON('/books', function(json) {
-		var bookTable = $('.book-list');
-		$.each(json, function(key, val) {
-			var row = $('<tr>');
-			appendBook(row, val);
-			bookTable.append(row);
-		});
-	});
-	
-	$('#btn-add-book').click(newBookClicked);
-	$('#btn-logout').click(logoutClicked);
-	$("#login-form .alert").hide();
-});
-</script>
 </head>
+
 <body>
+    <div class="navbar navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Librarian-Clojure</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="https://github.com/jaceklaskowski/librarian-clojure">Project at GitHub</a></li>
+            </ul>
+            <div id="login-form-container" class="navbar-form pull-right active">
+            	<ul class="nav">
+            		<li><a class="active" href="#">#{login-form}</a></li>
+            		#{logout-form}
+            	</ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 	<div class="container">
-		<div class="page-header">
-			<h1>
-				<a href="/">Librarian-Clojure</a> <small>a small web application for managing books in Clojure</small>
-			</h1>
-		</div>
 		<section id="main">
 			<div class="row">
-				<div class="span10">
+				<div class="span12">
 					<h1>Book list</h1>
 					<blockquote>
 						<p>The screen shows the list of available books</p>
@@ -250,13 +76,11 @@ $(document).ready(function() {
 						<button class="btn btn-success" id="btn-add-book"><i class="icon-plus icon-white"></i> New Book</button>
 					</p>
 				</div>
-				<div class="span2">
-					#{login-form}
-					#{logout-form}
-				</div>
 			</div>
 		</section>
+		<hr>
 		<footer>
+			<p>&copy; Konrad Garus, Jacek Laskowski 2012</p>
 			<!-- https://github.com/markdotto/github-buttons/#readme -->
 			<iframe src="http://bit.ly/ghbtns-fork-count" allowtransparency="true" frameborder="0" scrolling="0" width="132px" height="20px"></iframe>
 			<div class="pull-right">
@@ -264,5 +88,219 @@ $(document).ready(function() {
 			</div>
 		</footer>
 	</div>
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="//code.jquery.com/jquery-latest.js"></script>
+	<script src="/ember-0.9.3.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script>
+	function createButton(params) {
+		var button = $('<button>');
+		button.addClass('btn').addClass(params.buttonClass);
+		if(params.icon) {
+			var icon = $('<i>').addClass('icon-white').addClass(params.icon)
+			button.append(icon);
+			button.append(' ');
+		}
+		button.append(params.caption);
+		button.click(params.callback);
+		return button;
+	}
+
+	function appendBook(row, book) {
+		row.attr('data-id', book._id);
+		row.attr('data-author', book.author);
+		row.attr('data-title', book.title);
+		row.append('<td>' + book._id + '</td>');
+		row.append('<td>' + book.author + '</td>');
+		row.append('<td>' + book.title + '</td>');
+		
+		var editButton = createButton({
+			buttonClass: 'btn-primary',
+			icon: 'icon-pencil',
+			caption: 'Edit',
+			callback: editBook(row)});
+		
+		var deleteButton = createButton({
+			buttonClass: 'btn-danger',
+			icon: 'icon-trash',
+			caption: 'Delete',
+			callback: deleteBook(row)});
+		
+		var buttons = $('<td>');
+		buttons.append(editButton);
+		buttons.append(' ');
+		buttons.append(deleteButton);
+		row.append(buttons);
+	}
+
+	function isExistingBook(row) {
+		return row.attr('data-id');
+	}
+
+	function getEditedBook(row) {
+		return {
+			_id: row.attr('data-id'), 
+			author: row.find('input[name="author"]').val().trim(), 
+			title: row.find('input[name="title"]').val().trim()};
+	}
+
+	function validateBook(book) {
+		var errorMsg = '';
+		if(book.author.length == 0) {
+			errorMsg += 'Author is missing\n';
+		}
+		if(book.title.length == 0) {
+			errorMsg += 'Title is missing\n';
+		}
+		if(errorMsg.length > 0) {
+			alert(errorMsg);
+		}
+		return errorMsg.length == 0;
+	}
+
+	function deleteBook(row) {
+		return function() {
+			var bookId = row.attr('data-id');
+			$.ajax('/books/' + bookId, {
+				type: 'DELETE',
+				dataType: 'json',
+				success: function(book) {
+					row.remove();
+				}
+			});
+		};
+	}
+
+
+	function performSave(book, row) {
+		$.ajax('/books', {
+			type: 'PUT',
+			data: book,
+			dataType: 'json',
+			success: function(book) {
+				row.empty();
+				appendBook(row, book);
+			}
+		});
+	}
+
+	function performUpdate(book, row) {
+		$.ajax('/books/' + book._id, {
+			type: 'POST',
+			data: book,
+			dataType: 'json',
+			success: function(book) {
+				row.empty();
+				appendBook(row, book);
+			}
+		});
+	}
+
+	function updateBook(row) {
+		return function() {
+			var book = getEditedBook(row);
+			if(validateBook(book)) {
+				row.find('input').attr('disabled', true);
+				row.find('button').attr('disabled', true);
+				if(isExistingBook(row)) {
+					performUpdate(book, row);
+				} else {
+					performSave(book, row);
+				}
+			}
+		}
+	}
+
+	function cancelEdit(row) {
+		return function() {
+			if(isExistingBook(row)) {
+				var book = {
+						_id: row.attr('data-id'), 
+						author: row.attr('data-author'), 
+						title: row.attr('data-title')};
+				row.empty();
+				appendBook(row, book);
+			} else {
+				row.remove();
+			}
+		}
+	}
+
+	function editBook(row) {
+		return function() {
+			row.empty();
+			if(isExistingBook(row)) {
+				row.append('<td>' + row.attr('data-id') + '</td>');
+				row.append('<td><input type="text" name="author" value="' + row.attr('data-author') + '" /></td>');
+				row.append('<td><input type="text" name="title" value="' + row.attr('data-title') + '" /></td>');
+			} else {
+				row.append('<td>');
+				row.append('<td><input type="text" name="author" /></td>');
+				row.append('<td><input type="text" name="title" /></td>');
+			}
+			var saveButton = createButton({
+				buttonClass: 'btn-success',
+				icon: 'icon-pencil',
+				caption: 'Save',
+				callback: updateBook(row)});
+			
+			var cancelButton = createButton({
+				buttonClass: 'btn-success',
+				caption: 'Cancel',
+				callback: cancelEdit(row)});
+			
+			var buttons = $('<td>');
+			buttons.append(saveButton);
+			buttons.append(' ');
+			buttons.append(cancelButton);
+			row.append(buttons);
+		};
+	}
+
+	function newBookClicked() {
+		var row = $('<tr>');
+		$('.book-list').append(row);
+		editBook(row).call();
+	}
+
+	function logoutClicked() {
+		$.ajax('/logout', {
+			type: 'POST',
+			dataType: 'json',
+			success: function(data) {
+				location.reload();
+			}
+		});
+		return false;
+	}
+
+	$(document).ready(function() {
+		$.getJSON('/books', function(json) {
+			var bookTable = $('.book-list');
+			$.each(json, function(key, val) {
+				var row = $('<tr>');
+				appendBook(row, val);
+				bookTable.append(row);
+			});
+		});
+		
+		$('#btn-add-book').click(newBookClicked);
+		$('#btn-logout').click(logoutClicked);
+		$("#login-form .alert").hide();
+	});
+	</script>
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37256636-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
 </body>
 </html>

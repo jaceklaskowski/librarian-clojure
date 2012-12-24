@@ -1,20 +1,5 @@
-<div id="login-form-container">
-	<form id="login-form">
-		<fieldset>
-			<legend>Log In</legend>
-			<label for="login">User Name:</label><input type="text" name="login" value="admin"/>
-			<label for="password">Password:</label><input type="password" name="password" value="admin"/>
-			<button class="btn" id="btn-login">Log In</button>		
-		</fieldset>
-	</form>
-	
-	<form id="signup-form">
-		<fieldset>
-			<legend>Sign In</legend>
-			<label for="login">User Name:</label><input type="text" name="login" />
-			<label for="password">Password:</label><input type="password" name="password" />
-			<label for="password2">Repeat:</label><input type="password" name="password2" />
-			<button class="btn" id="btn-signup">Sign In</button>		
-		</fieldset>
-	</form>
-</div>
+<form class="navbar-form pull-right" id="login-form">
+  <input class="span2" type="text" name="login" value="admin" placeholder="User name">
+  <input class="span2" type="password" name="password" value="admin" placeholder="Password">
+  <button type="submit" class="btn" id="btn-login">Sign in</button>
+</form>
