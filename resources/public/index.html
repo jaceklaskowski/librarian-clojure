@@ -4,26 +4,26 @@
    -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Librarian (in Clojure)</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Book manager for Warszawa Java User Group in Clojure">
-<meta name="author" content="Konrad Garus, Jacek Laskowski">
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-<style type="text/css">
-  body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-  }
-</style>
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
-</head>
+  <head>
+    <meta charset="UTF-8">
+    <title>Librarian (in Clojure)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book manager for Warszawa Java User Group in Clojure">
+    <meta name="author" content="Konrad Garus, Jacek Laskowski">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
+  </head>
 
 <body>
     <div class="navbar navbar navbar-fixed-top">
@@ -82,6 +82,17 @@
 				</div>
 			</div>
 		</section>
+    <div id="login-form">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" class="input-block-level" name="login" value="admin" placeholder="Email address">
+        <input type="password" class="input-block-level" name="password" value="admin" placeholder="Password">
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-large btn-primary" type="submit" id="btn-signin">Sign in</button>
+      </form>
+    </div>
 		<hr>
 		<footer>
 			<p>Copyright &copy; 2012, Konrad Garus, Jacek Laskowski</p>
@@ -96,6 +107,7 @@
 	<script src="//code.jquery.com/jquery-latest.js"></script>
 	<script src="/ember-0.9.3.min.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
+  <script src="/js/buckwilson-Lightbox_me-8ff1a2b/jquery.lightbox_me.js"></script>
 	<script>
 	function appendBook(row, book) {
 		row.attr('data-id', book._id);
@@ -107,6 +119,16 @@
 	}
 
 	function loginClicked() {
+    $('#login-form').lightbox_me({
+      centered: true, 
+      onLoad: function() { 
+        $('#login-form').find('input:first').focus()
+      }
+    });
+    return false
+  }
+
+  function signinClicked() {
 		var login = $("#login-form").find('input[name="login"]').val().trim();
 		var pw = $("#login-form").find('input[name="password"]').val().trim();
 		if(login.length == 0 || pw.length == 0) {
@@ -184,9 +206,12 @@
 		});
 		
 		$('#btn-login').click(loginClicked);
+    $('#btn-signin').click(signinClicked);
 		$('#btn-signup').click(signupClicked);
 		$('#btn-logout').click(logoutClicked);
 		hideErrors();
+
+    $('#login-form').hide();
 	});
 	</script>
   <script type="text/javascript">
