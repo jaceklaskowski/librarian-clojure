@@ -3,14 +3,15 @@
   (:use [compojure.core :only (GET POST PUT DELETE ANY defroutes)]
         [compojure.route :only (resources not-found)]
         [ring.util.response :only (redirect)]
-        [librarian-clojure books page])
+        [librarian-clojure books])
   (:require [clojure.data.json :as json]
             [librarian-clojure.security :as security]
+            [librarian-clojure.page :as page]
             [cemerick.friend :as friend]))
 
 (defroutes routes
-  (GET       "/"                  request                   (render-main request))
-  (GET       "/login"             request                   (render-main request))
+  (GET       "/"                  request                   (page/render-main request))
+  (GET       "/login"             request                   (page/render-main request))
   (POST      "/login"             []                        (-> (security/login-handler) json/json-str))
   (POST      "/signup"            []                        (-> (security/signup-handler) json/json-str))
   (GET       "/books"             []                        (-> (get-books) json/json-str))
