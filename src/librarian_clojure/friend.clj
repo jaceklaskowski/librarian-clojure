@@ -9,8 +9,10 @@
 (defn signup-form
   [{:keys [login password]}]
   (let [success-fn (fn [{:keys [username roles] :as new-user}]
-                     (workflows/make-auth {:identity username :username username
-                                           :login username :roles roles}))]
+                     (-> {:identity username :username username
+                          :login username :roles roles}
+                         (with-meta {:cemerick.friend/redirect-on-auth? false})
+                         workflows/make-auth))]
     (security/signup-workflow-handler login password success-fn)))
 
 (defn signup-workflow [{:keys [uri request-method params]}]
