@@ -12,11 +12,11 @@
                       (fn [_] 
                         (make-connection :app2623043 {:host "staff.mongohq.com" :port 10056})))
       (println "Database URL: " (System/getenv "DATABASE_URL"))
-      (println "Authentication result: " (authenticate *database-connection* "heroku" "passw0rd"))))
+      (println "Authentication result: " (authenticate *database-connection* "heroku" "passw0rd")))
     (do
       (alter-var-root #'*database-connection*
                       (fn [_]
-                        (make-connection :test {:host "127.0.0.1" :port 27017})))))
+                        (make-connection :test {:host "127.0.0.1" :port 27017}))))))
 
 (defn- next-seq [coll]
   (when *database-connection*
