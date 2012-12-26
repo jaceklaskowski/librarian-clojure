@@ -2,11 +2,11 @@
   "Provides routes for the web application"
   (:use [compojure.core :only (GET POST PUT DELETE ANY defroutes)]
         [compojure.route :only (resources not-found)]
-        [ring.util.response :only (redirect)]
-        [librarian-clojure books])
+        [ring.util.response :only (redirect)])
   (:require [clojure.data.json :as json]
             [librarian-clojure.security :as security]
             [librarian-clojure.page :as page]
+            [librarian-clojure.books :as books]
             [cemerick.friend :as friend]))
 
 (defroutes routes
@@ -14,16 +14,19 @@
   (GET       "/login"             request                   (page/render-main request))
   (POST      "/login"             []                        (-> (security/login-handler) json/json-str))
   (POST      "/signup"            []                        (-> (security/signup-handler) json/json-str))
-  (GET       "/books"             []                        (-> (get-books) json/json-str))
+  (GET       "/books"             []                        (-> (books/get-books) json/json-str))
   (PUT       "/books"             [author title]            (friend/authorize
                                                              #{:admin}
-                                                             (-> (add-book author title) json/json-str)))
+                                                             (-> (books/add-book author title)
+                                                                 json/json-str)))
   (DELETE    "/books/:id"         [id]                      (friend/authorize
                                                              #{:admin}
-                                                             (-> (delete-book id) json/json-str)))
+                                                             (-> (books/delete-book id)
+                                                                 json/json-str)))
   (POST      "/books/:id"         [id author title]         (friend/authorize
                                                              #{:admin}
-                                                             (-> (update-book id author title) json/json-str)))
+                                                             (-> (books/update-book id author title)
+                                                                 json/json-str)))
   (friend/logout (ANY "/logout"   []                        (-> (security/logout-handler) json/json-str)))
   (resources "/")
   (ANY       "/*"                 []                        (redirect "/")))
