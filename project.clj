@@ -1,12 +1,12 @@
 ;; http://corfield.org/blog/post.cfm/testing-your-project-against-multiple-versions-of-clojure
 ;; common dependencies
-(def common-deps '[[ring/ring-jetty-adapter "1.1.0-RC1" :exclusions [org.clojure/clojure]]
-                   [ring/ring-devel "1.1.0-RC1" :exclusions [org.clojure/clojure]]
-                   [compojure "1.0.1" :exclusions [org.clojure/clojure
+(def common-deps '[[ring/ring-jetty-adapter "1.1.6" :exclusions [org.clojure/clojure]]
+                   [ring/ring-devel "1.1.6" :exclusions [org.clojure/clojure]]
+                   [compojure "1.1.3" :exclusions [org.clojure/clojure
                                                    ring/ring-core]]
-                   [hiccup "1.0.0-RC2" :exclusions [org.clojure/clojure]] 
-                   [congomongo "0.1.8" :exclusions [org.clojure/clojure]]
-                   [org.clojure/data.json "0.1.2" :exclusions [org.clojure/clojure]]
+                   [hiccup "1.0.2" :exclusions [org.clojure/clojure]] 
+                   [congomongo "0.3.3" :exclusions [org.clojure/clojure]]
+                   [org.clojure/data.json "0.2.1" :exclusions [org.clojure/clojure]]
                    [jbcrypt "0.3" :exclusions [org.clojure/clojure]]
                    [com.cemerick/friend "0.1.2" :exclusions [org.clojure/clojure]]])
 

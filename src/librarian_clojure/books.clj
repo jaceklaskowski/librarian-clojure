@@ -1,13 +1,5 @@
 (ns librarian-clojure.books
-  (:use librarian-clojure.db)
-  (:require [clojure.data.json :as json]))
-
-;; https://github.com/clojure/data.json/blob/master/src/main/clojure/clojure/data/json.clj
-(defn- write-json-mongodb-objectid [x out escape-unicode?]
-  (json/write-json (str x) out escape-unicode?))
-
-(extend org.bson.types.ObjectId json/Write-JSON
-  {:write-json write-json-mongodb-objectid})
+  (:use librarian-clojure.db))
 
 (defn get-books []
   (db-get-books))
