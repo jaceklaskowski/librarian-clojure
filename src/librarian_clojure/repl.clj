@@ -2,7 +2,7 @@
 (ns librarian-clojure.repl
   "The starting namespace for the project. This is the namespace that
   users will land in when they start a Clojure REPL. It exists to
-  provide convenience functions like 'go' and 'dev-server'."  
+  provide convenience functions like 'go' and 'stop'."  
   (:require [clojure.java.browse :as browse]
             [librarian-clojure.core :as core]))
 
@@ -17,8 +17,8 @@
           (browse/browse-url "http://localhost:8080/development"))
   (tools/cljs-repl))
   ;;
-  (let [port (Integer/parseInt (get (System/getenv) "PORT" "8080"))]
-    (alter-var-root (var *server*) (fn [_] (core/start-server port)))
+  (let [port (Integer/parseInt (-> (System/getenv) (get "PORT" "8080")))]
+    (alter-var-root #'*server* (fn [_] (core/start-server port)))
     (browse/browse-url (str "http://localhost:" port))))
 
 (defn stop
