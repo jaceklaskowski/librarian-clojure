@@ -36,7 +36,8 @@
   :aot :all
   :profiles {:dev {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure
                                                                   hiccup]]
-                                  [midje "1.3.1" :exclusions [org.clojure/clojure]]
+                                  [midje "1.5-alpha3" :exclusions [org.clojure/clojure]]
+                                  [lein-midje "2.0.3" :exclusions [org.clojure/clojure]]
                                   [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]}
              :1.5 {:dependencies [[org.clojure/clojure "1.5.0-master-SNAPSHOT"]]}}
   :aliases {"dev" ["with-profile" "dev"]
