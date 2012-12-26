@@ -1,1 +1,1 @@
-web: lein trampoline run -m librarian-clojure.run/run-heroku $PORT
+web: lein trampoline with-profile production run $PORT 

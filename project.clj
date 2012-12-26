@@ -31,16 +31,21 @@
                      [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]
   :ring {:handler librarian-clojure.core/app
          :init librarian-clojure.run/run-local-ring}
-  :main librarian-clojure.run
+  :main "librarian-clojure.run"
   :min-lein-version "2.0.0"
   :aot :all
-  :profiles {:dev {:dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure
+  :profiles {;; https://devcenter.heroku.com/articles/clojure-support#runtime-behavior
+             :production {:misc "configuration"
+                          :main "librarian-clojure.run/run-heroku"
+                          :mirrors {#"central|clojars"
+                                    "http://s3pository.herokuapp.com/clojure"}}
+             :dev {:main "librarian-clojure.run/run-local"
+                   :dependencies [[ring-mock "0.1.1" :exclusions [org.clojure/clojure
                                                                   hiccup]]
                                   [midje "1.5-alpha3" :exclusions [org.clojure/clojure]]
                                   [lein-midje "2.0.3" :exclusions [org.clojure/clojure]]
                                   [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]}
              :1.5 {:dependencies [[org.clojure/clojure "1.5.0-master-SNAPSHOT"]]}}
-  :aliases {"dev" ["with-profile" "dev"]
-            "all" ["with-profile" "dev,1.5"]
-            "run-local"  ["run" "-m" "librarian-clojure.run/run-local"]}
+  :aliases {"run-local" ["with-profile" "dev" "run"]
+            "all" ["with-profile" "dev,1.5"]}
   :warn-on-reflection true)
