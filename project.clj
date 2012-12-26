@@ -26,16 +26,16 @@
                    :dependencies [[ring-mock                 "0.1.1" :exclusions [org.clojure/clojure
                                                                                   hiccup]]
                                   [midje                     "1.5-alpha3" :exclusions [org.clojure/clojure]]
-                                  [lein-midje                "2.0.3" :exclusions [org.clojure/clojure]]
-                                  [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]}
+                                  [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]
+                   :plugins [[lein-midje "2.0.3"]]}
              ;; FIXME deps copied from the dev profile
              :1.5 {:dependencies [[org.clojure/clojure       "1.5.0-master-SNAPSHOT"]
                                   [ring-mock                 "0.1.1" :exclusions [org.clojure/clojure
                                                                                   hiccup]]
                                   [midje                     "1.5-alpha3" 
                                    :exclusions [org.clojure/clojure]]
-                                  [lein-midje                "2.0.3" :exclusions [org.clojure/clojure]]
-                                  [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]}}
+                                  [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]
+                   :plugins [[lein-midje "2.0.3"]]}}
   :aliases {"run-local" ["with-profile" "dev" "run"]
             "all" ["with-profile" "dev:1.5"]}
   :aot :all
