@@ -16,13 +16,13 @@
   :repl-init librarian-clojure.repl
   :ring {:handler librarian-clojure.core/app
          :init librarian-clojure.run/run-local-ring}
-  :main "librarian-clojure.run"
+  :main librarian-clojure.run
   :profiles {;; https://devcenter.heroku.com/articles/clojure-support#runtime-behavior
              :production {:misc "configuration"
-                          :main "librarian-clojure.run/run-heroku"
+                          :main librarian-clojure.run/run-heroku
                           :mirrors {#"central|clojars"
                                     "http://s3pository.herokuapp.com/clojure"}}
-             :dev {:main "librarian-clojure.run/run-local"
+             :dev {:main librarian-clojure.run/run-local
                    :dependencies [[ring-mock                 "0.1.1" :exclusions [org.clojure/clojure
                                                                                   hiccup]]
                                   [midje                     "1.5-alpha3" :exclusions [org.clojure/clojure]]
