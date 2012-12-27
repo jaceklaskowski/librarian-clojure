@@ -7,7 +7,7 @@
   (if (= env :heroku)
     (let [conn (make-connection :app2623043 {:host "staff.mongohq.com" :port 10056})]
       (println "Database URL: " (System/getenv "DATABASE_URL"))
-      (println "Authentication result: " (authenticate *database-connection* "heroku" "passw0rd"))
+      (println "Authentication result: " (authenticate conn "heroku" "passw0rd"))
       (set-connection! conn))
     (set-connection! (make-connection :test {:host "127.0.0.1" :port 27017}))))
 
