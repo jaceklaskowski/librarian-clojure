@@ -4,8 +4,6 @@
   (:require [librarian-clojure.db :as db]
             [ring.mock.request :as ring]))
 
-(def identity-request (ring/request :get "/books"))
-
 (fact "get-user-by-login username contract"
   (get-user-by-login "admin") => (contains {:username "admin"})
   (provided (db/db-get-user "admin") => {:login "admin"}))
