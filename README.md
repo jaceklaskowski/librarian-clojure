@@ -22,6 +22,7 @@ A browser window shows up with the welcome page of the application.
 
 ## License
 
-Copyright (C) 2012 [Konrad Garus](https://github.com/konrad-garus), [Adrian Gruntkowski](https://github.com/zoldar), [Jacek Laskowski](https://github.com/jaceklaskowski)
+Copyright (C) 2012 [Konrad Garus](https://github.com/konrad-garus), [Adrian Gruntkowski](https://github.com/zoldar), [Jacek Laskowski](https://github.com/jaceklaskowski), and
+[contributors](https://github.com/jaceklaskowski/librarian-clojure/graphs/contributors)
 
 Distributed under the Eclipse Public License, the same as Clojure.
