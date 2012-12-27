@@ -27,7 +27,8 @@
                                                                                   hiccup]]
                                   [midje                     "1.5-alpha3" :exclusions [org.clojure/clojure]]
                                   [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]
-                   :plugins [[lein-midje "2.0.3"]]}
+                   :plugins [[lein-midje "2.0.3"]]
+                   :repl-options {:init-ns librarian-clojure.repl}}
              ;; FIXME deps copied from the dev profile
              :1.5 {:dependencies [[org.clojure/clojure       "1.5.0-master-SNAPSHOT"]
                                   [ring-mock                 "0.1.1" :exclusions [org.clojure/clojure
