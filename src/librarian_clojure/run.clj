@@ -1,7 +1,8 @@
 (ns librarian-clojure.run
   "Bootstrap for 'lein run'"
   (:use librarian-clojure.core
-        [clojure.java.browse :only (browse-url)])
+        [clojure.java.browse :only (browse-url)]
+        [librarian-clojure.config :only [*env*]])
   (:require [librarian-clojure.db :as db]
             [librarian-clojure.security :as security]))
 
@@ -20,18 +21,21 @@
     (start-server port)))
 
 (defn run-local [& args]
-  (db/init :local)
-  (security/init)
-  (start-and-browse args "/"))
+  (binding [*env* :local]
+    (db/init)
+    (security/init)
+    (start-and-browse args "/")))
 
 (defn run-local-ring [& args]
-  (db/init :local)
-  (security/init))
+  (binding [*env* :local]
+    (db/init)
+    (security/init)))
 
 (defn run-heroku [& args]
-  (db/init :heroku)
-  (security/init)
-  (start args))
+  (binding [*env* :heroku]
+    (db/init)
+    (security/init)
+    (start args)))
 
 (defn -main [] 
   (do
