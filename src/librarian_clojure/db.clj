@@ -1,16 +1,13 @@
 (ns librarian-clojure.db
   (:import [jBCrypt BCrypt])
-  (:use [librarian-clojure.config :only [*env*]])
+  (:use [librarian-clojure.config :only [*env* mongo-config]])
   (:require [somnium.congomongo :as cm]))
 
 (defn init []
-  (println "Environment: " *env*)
-  (if (= *env* :heroku)
-    (let [conn (cm/make-connection :app2623043 {:host "staff.mongohq.com" :port 10056})]
-      (println "Database URL: " (System/getenv "DATABASE_URL"))
-      (println "Authentication result: " (cm/authenticate conn "heroku" "passw0rd"))
-      (cm/set-connection! conn))
-    (cm/set-connection! (cm/make-connection :test {:host "127.0.0.1" :port 27017}))))
+  (println "Environment:" *env*)
+  (println "Mongo:" (*env* mongo-config))
+  (let [conn (cm/make-connection (*env* mongo-config))]
+    (cm/set-connection! conn)))
 
 (defn- next-seq [coll]
   (:seq (cm/fetch-and-modify :sequences {:_id coll} {:$inc {:seq 1}}
