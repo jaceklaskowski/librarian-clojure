@@ -2,7 +2,7 @@
 
 Book manager for [Warszawa Java User Group](http://warszawa.jug.pl) written in [Clojure](http://clojure.org).
 
-The views (and perhaps other parts, too) are heavily inspired by the [mametipsum](https://github.com/tvaughan/mametipsum) and the [Basic marketing site from Bootstrap's Examples] (http://twitter.github.com/bootstrap/examples/hero.html) projects.
+The views (and perhaps other parts, too) are heavily inspired by the [mametipsum](https://github.com/tvaughan/mametipsum) and the [Basic marketing site from Bootstrap's Examples](http://twitter.github.com/bootstrap/examples/hero.html) projects.
 
 ## Running the project
 
@@ -16,8 +16,8 @@ A browser window shows up with the welcome page of the application.
 ## How to contribute (test first please)
 
  1. Open a terminal and fire up `lein2 midje --lazytest`
- 2. Write a test that fails
- 3. Fix it and send a pull request
+ 2. Write a test that fails (see [Issues](https://github.com/jaceklaskowski/librarian-clojure/issues) for ideas)
+ 3. Fix, commit and send a pull request
  4. Rinse and repeat
 
 ## License
