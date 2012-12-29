@@ -4,6 +4,7 @@
 
 (def ^:static mongo-config
   {:local  :test
-   ;; mongodb: URL scheme allows for authentication with no additional Mongo API calls
-   ;; See http://api.mongodb.org/java/current/com/mongodb/MongoClientURI.html
-   :heroku "mongodb://heroku:passw0rd@staff.mongohq.com:10056/app2623043"})
+   ;; MONGOHQ_URL should be set on Heroku
+   :heroku (or (System/getenv "MONGOHQ_URL")
+               ;; hack to force meaningful exception when outside Heroku
+               "mongodb://MONGOHQ_URL not set. Perhaps you run the app outside Heroku?")})
