@@ -115,13 +115,13 @@
 		row.append('<td>' + book.title + '</td>');
 		
 		var editButton = createButton({
-			buttonClass: 'btn-primary',
-			icon: 'icon-pencil',
+			buttonClass: 'btn btn-primary',
+			icon: 'icon-edit',
 			caption: 'Edit',
 			callback: editBook(row)});
 		
 		var deleteButton = createButton({
-			buttonClass: 'btn-danger',
+			buttonClass: 'btn btn-danger',
 			icon: 'icon-trash',
 			caption: 'Delete',
 			callback: deleteBook(row)});
@@ -235,12 +235,12 @@
 				row.append('<td><input type="text" name="title" value="' + row.attr('data-title') + '" /></td>');
 			} else {
 				row.append('<td>');
-				row.append('<td><input type="text" name="author" /></td>');
-				row.append('<td><input type="text" name="title" /></td>');
+				row.append('<td><input type="text" name="author" placeholder="Author" /></td>');
+				row.append('<td><input type="text" name="title" placeholder="Title" /></td>');
 			}
 			var saveButton = createButton({
 				buttonClass: 'btn-success',
-				icon: 'icon-pencil',
+				icon: 'icon-ok',
 				caption: 'Save',
 				callback: updateBook(row)});
 			
@@ -254,6 +254,7 @@
 			buttons.append(' ');
 			buttons.append(cancelButton);
 			row.append(buttons);
+			row.find('input:first').focus()
 		};
 	}
 
