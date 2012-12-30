@@ -198,6 +198,16 @@ var Librarian = function() {
         return false;
     }
 
+    function createAccountClicked() {
+        $('#signup-form').lightbox_me({
+            centered: true, 
+            onLoad: function() { 
+                $('#signup-form').find('input:first').focus();
+            }
+        });
+        return false;
+    }
+
     function signinClicked() {
         var login = $("#login-form").find('input[name="login"]').val().trim();
         var pw = $("#login-form").find('input[name="password"]').val().trim();
@@ -282,12 +292,14 @@ var Librarian = function() {
             appendBook(row, val);
         });
         $('#btn-login').click(loginClicked);
+        $('#btn-create-account').click(createAccountClicked);
         $('#btn-signin').click(signinClicked);
         $('#btn-signup').click(signupClicked);
         $('#btn-logout').click(logoutClicked);
         hideErrors();
         
         $('#login-form').hide();
+        $('#signup-form').hide();
     }
 
     function initAdmin() {
