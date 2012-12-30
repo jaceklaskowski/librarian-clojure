@@ -208,31 +208,33 @@ var Librarian = function() {
   }
 
   function signinClicked() {
-    var login = $("#login-form").find('input[name="login"]').val().trim();
-    var pw = $("#login-form").find('input[name="password"]').val().trim();
-    if(login.length == 0 || pw.length == 0) {
-      alert('Please provide user name and password');
-    } else {
-      $.ajax('/login', {
-        type: 'POST',
-        data: {"login": login, "password": pw},
-        dataType: 'json',
-        success: function(data) {
-          if(data != null && data != undefined && data.successful) {
-            location.reload();
-          } else {
-            showError($("#login-form"), data.errorDetail);
-          }
+    var form = $("#login-form");
+    $('div.errors', form).empty();
+    var login = form.find('input[name="login"]').val().trim();
+    var pw = form.find('input[name="password"]').val().trim();
+    $.ajax('/login', {
+      type: 'POST',
+      data: {"login": login, "password": pw},
+      dataType: 'json',
+      success: function(data) {
+        if(data != null && data != undefined && data.successful) {
+          location.reload();
+        } else {
+          var errorList = $('div.errors', form);
+          errorList.empty();
+          errorList.show().append(data.errorDetail);
         }
-      });
-    }
+      }
+    });
     return false;
   }
 
   function signupClicked() {
-    var login = $("#signup-form").find('input[name="login"]').val().trim();
-    var pw = $("#signup-form").find('input[name="password"]').val().trim();
-    var pw2 = $("#signup-form").find('input[name="password2"]').val().trim();
+    var form = $("#signup-form");
+    $('div.errors', form).empty();
+    var login = form.find('input[name="login"]').val().trim();
+    var pw = form.find('input[name="password"]').val().trim();
+    var pw2 = form.find('input[name="password2"]').val().trim();
 
     if(login.length == 0 || pw.length == 0) {
       alert('Please provide user name and password');
@@ -247,7 +249,9 @@ var Librarian = function() {
           if(data != null && data != undefined && data.successful) {
             location.reload();
           } else {
-            showError($("#signup-form"), data.errorDetail);
+            var errorList = $('div.errors', form);
+            errorList.empty();
+            errorList.show().append(data.errorDetail);
           }
         }
       });
