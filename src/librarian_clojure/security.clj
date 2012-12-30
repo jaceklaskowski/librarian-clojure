@@ -59,7 +59,6 @@ should contain identity in the context current on-the-fly request."
 (defn signup-handler
   "Auth handler"
   []
-  (println "signup-handler")
   (success))
 
 (defn login-handler
