@@ -4,21 +4,23 @@
             [librarian-clojure.db :as db]
             [cemerick.friend :as friend]
             [clojure.data.json :as json]))
-
   
-;; Init - creates admin/admin superuser
-
-(defn init []
+(defn init
+  "Creates admin/admin superuser"
+  []
   (when-not (db/db-get-user "admin")
     (prn "Creating privileged admin/admin user")
     (db/db-add-user "admin" (hash-bcrypt "admin") [:admin])))
 
-;; Auth helpers
+(defn- success
+  "Auth helper"
+  [] {:successful true})
 
-(defn- success [] {:successful true})
+(defn- failure
+  "Auth helper"
+  [msg] {:successful false 
+         :errorDetail msg})
 
-(defn- failure [msg] {:successful false 
-                      :errorDetail msg})
 (defn get-user-by-login
   "Assures that the returned data contain :username key for friend's identity."
   [login]
@@ -35,17 +37,19 @@ should contain identity in the context current on-the-fly request."
 (defn has-role? [request role]
   (friend/authorized? [role] (friend/identity request)))
 
-;; Auth related handlers
-
 (defn login-failure-handler
+  "Auth handler"
   [request]
   {:body (-> (failure "Login failed") json/json-str)})
 
-(defn unauthorized-handler [request]
+(defn unauthorized-handler
+  "Auth handler"
   [request]
   {:status 403 :body "Access denied"})
 
-(defn signup-workflow-handler [login password success-fn]
+(defn signup-workflow-handler 
+  "Auth handler"
+  [login password success-fn]
   (if (get-user-by-login login)
     (failure "Account exists")
     (do
@@ -53,7 +57,9 @@ should contain identity in the context current on-the-fly request."
       (success-fn (get-user-by-login login)))))
 
 (defn signup-handler
+  "Auth handler"
   []
+  (println "signup-handler")
   (success))
 
 (defn login-handler
@@ -62,6 +68,7 @@ should contain identity in the context current on-the-fly request."
   (success))
 
 (defn logout-handler
+  "Auth handler"
   []
   (success))
 
