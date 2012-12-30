@@ -4,84 +4,84 @@
    -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Librarian (in Clojure)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Book manager for Warszawa Java User Group in Clojure">
-    <meta name="author" content="Konrad Garus, Jacek Laskowski">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <title>Librarian (in Clojure)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book manager for Warszawa Java User Group in Clojure">
+  <meta name="author" content="Konrad Garus, Jacek Laskowski">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+  <style type="text/css">
+    body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    }
+  </style>
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
+</head>
 
 <body>
-    <div class="navbar navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">Librarian-Clojure</a>
-          <div class="nav-collapse collapse">
+  <div class="navbar navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="#">Librarian-Clojure</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li class="active"><a href="https://github.com/jaceklaskowski/librarian-clojure">Project at GitHub</a></li>
+          </ul>
+          <!-- Found at http://www.google.com/analytics/ -->
+          <div id="login-form-container" class="navbar-form pull-right active">
             <ul class="nav">
-              <li class="active"><a href="https://github.com/jaceklaskowski/librarian-clojure">Project at GitHub</a></li>
+              <li><button class="btn" id="btn-login">Log in</button></li>
+              <li><a href="#">or</a></li>
+              <li><button class="btn" id="btn-create-account">Create account</button></li>
             </ul>
-            <!-- Found at http://www.google.com/analytics/ -->
-            <div id="login-form-container" class="navbar-form pull-right active">
-            	<ul class="nav">
-            		<li><button class="btn" id="btn-login">Log in</button></li>
-                <li><a href="#">or</a></li>
-                <li><button class="btn" id="btn-create-account">Create account</button></li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
     </div>
-
-	<div class="container">
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>Librarian-Clojure</h1>
-        <p>Book manager for <a href="http://warszawa.jug.pl">Warszawa Java User Group</a> written in <a href="http://clojure.org">Clojure</a>.</p>
-        <p><a href="https://github.com/jaceklaskowski/librarian-clojure" class="btn btn-primary btn-large">Learn more (at GitHub) &raquo;</a></p>
+  </div>
+  
+  <div class="container">
+    <!-- Main hero unit for a primary marketing message or call to action -->
+    <div class="hero-unit">
+      <h1>Librarian-Clojure</h1>
+      <p>Book manager for <a href="http://warszawa.jug.pl">Warszawa Java User Group</a> written in <a href="http://clojure.org">Clojure</a>.</p>
+      <p><a href="https://github.com/jaceklaskowski/librarian-clojure" class="btn btn-primary btn-large">Learn more (at GitHub) &raquo;</a></p>
+    </div>
+    
+    <section id="main">
+      <div class="row">
+	<div class="span12">
+	  <h1>Book list</h1>
+	  <blockquote>
+	    <p>The screen shows the list of available books</p>
+	    <small>The Helper</small>
+	  </blockquote>
+	  <table class="table table-striped">
+	    <thead>
+	      <tr>
+		<th width="5%">Id</th>
+		<th width="35%">Author</th>
+		<th width="35%">Title</th>
+	      </tr>
+	    </thead>
+	    <tbody class="book-list">
+	    </tbody>
+	  </table>
+	</div>
       </div>
-
-		<section id="main">
-			<div class="row">
-				<div class="span12">
-					<h1>Book list</h1>
-					<blockquote>
-						<p>The screen shows the list of available books</p>
-						<small>The Helper</small>
-					</blockquote>
-					<table class="table table-striped">
-						<thead>
-							<tr>
-								<th width="5%">Id</th>
-								<th width="35%">Author</th>
-								<th width="35%">Title</th>
-							</tr>
-						</thead>
-						<tbody class="book-list">
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</section>
+    </section>
     <div id="login-form">
       <form class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
@@ -93,127 +93,28 @@
         <button class="btn btn-large btn-primary" type="submit" id="btn-signin">Sign in</button>
       </form>
     </div>
-		<hr>
-		<footer>
-			<p>Copyright &copy; 2012, Konrad Garus, Jacek Laskowski</p>
-			<!-- https://github.com/markdotto/github-buttons/#readme -->
-			<iframe src="http://bit.ly/ghbtns-fork-count" allowtransparency="true" frameborder="0" scrolling="0" width="132px" height="20px"></iframe>
-			<div class="pull-right">
-				<a href="https://github.com/jaceklaskowski/librarian-clojure">Join the librarian-clojure project on GitHub</a>
-			</div>
-		</footer>
-	</div>
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="//code.jquery.com/jquery-latest.js"></script>
-	<script src="/ember-0.9.3.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-  <script src="/js/buckwilson-Lightbox_me-8ff1a2b/jquery.lightbox_me.js"></script>
-	<script>
-	function appendBook(row, book) {
-		row.attr('data-id', book._id);
-		row.attr('data-author', book.author);
-		row.attr('data-title', book.title);
-		row.append('<td>' + book._id + '</td>');
-		row.append('<td>' + book.author + '</td>');
-		row.append('<td>' + book.title + '</td>');
-	}
-
-	function loginClicked() {
-    $('#login-form').lightbox_me({
-      centered: true, 
-      onLoad: function() { 
-        $('#login-form').find('input:first').focus()
-      }
-    });
-    return false
-  }
-
-  function signinClicked() {
-		var login = $("#login-form").find('input[name="login"]').val().trim();
-		var pw = $("#login-form").find('input[name="password"]').val().trim();
-		if(login.length == 0 || pw.length == 0) {
-			alert('Please provide user name and password');
-		} else {
-			$.ajax('/login', {
-				type: 'POST',
-				data: {"login": login, "password": pw},
-				dataType: 'json',
-				success: function(data) {
-					if(data != null && data != undefined && data.successful) {
-						location.reload();
-					} else {
-						showError($("#login-form"), data.errorDetail);
-					}
-				}
-			});
-		}
-		return false;
-	}
-
-	function signupClicked() {
-		var login = $("#signup-form").find('input[name="login"]').val().trim();
-		var pw = $("#signup-form").find('input[name="password"]').val().trim();
-		var pw2 = $("#signup-form").find('input[name="password2"]').val().trim();
-		if(login.length == 0 || pw.length == 0) {
-			alert('Please provide user name and password');
-		} else if(pw != pw2) {
-			alert('Please type the same password in both fields');
-		} else {
-			$.ajax('/signup', {
-				type: 'POST',
-				data: {"login": login, "password": pw},
-				dataType: 'json',
-				success: function(data) {
-					if(data != null && data != undefined && data.successful) {
-						location.reload();
-					} else {
-						showError($("#signup-form"), data.errorDetail);
-					}
-				}
-			});
-		}
-		return false;
-	}
-
-	function hideErrors() {
-		$("#login-form-container .alert-error").remove();
-	}
-
-	function showError(form, message) {
-		hideErrors();
-		$("<div />").addClass("alert alert-error").html(message).insertAfter(form);
-	}
-
-	function logoutClicked() {
-		$.ajax('/logout', {
-			type: 'POST',
-			dataType: 'json',
-			success: function(data) {
-				location.reload();
-			}
-		});
-		return false;
-	}
-
-	$(document).ready(function() {
-		$.getJSON('/books', function(json) {
-			var bookTable = $('.book-list');
-			$.each(json, function(key, val) {
-				var row = $('<tr>');
-				appendBook(row, val);
-				bookTable.append(row);
-			});
-		});
-		
-		$('#btn-login').click(loginClicked);
-    $('#btn-signin').click(signinClicked);
-		$('#btn-signup').click(signupClicked);
-		$('#btn-logout').click(logoutClicked);
-		hideErrors();
-
-    $('#login-form').hide();
-	});
-	</script>
+    <hr>
+    <footer>
+      <p>Copyright &copy; 2012, Konrad Garus, Jacek Laskowski</p>
+      <!-- https://github.com/markdotto/github-buttons/#readme -->
+      <iframe src="http://bit.ly/ghbtns-fork-count" allowtransparency="true" frameborder="0" scrolling="0" width="132px" height="20px"></iframe>
+      <div class="pull-right">
+	<a href="https://github.com/jaceklaskowski/librarian-clojure">Join the librarian-clojure project on GitHub</a>
+      </div>
+    </footer>
+  </div>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" src="/ember-0.9.3.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/js/buckwilson-Lightbox_me-8ff1a2b/jquery.lightbox_me.js"></script>
+  <script type="text/javascript" src="/js/app.js"></script>
+  <script type="text/javascript">
+  <!--//
+    var librarian = new Librarian();
+    librarian.initFront();
+  //-->
+  </script>
   <script type="text/javascript">
 
     var _gaq = _gaq || [];
