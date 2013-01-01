@@ -4,7 +4,7 @@
                                          signup-workflow)]
         [compojure.handler :only (site)]
         [ring.adapter.jetty :only (run-jetty)]
-        [sandbar.stateful-session :only (wrap-stateful-session)])
+        [noir.session :only (wrap-noir-session)])
   (:require [librarian-clojure.security :as security]
             [cemerick.friend :as friend]
             [cemerick.friend [workflows :as workflows]
@@ -20,7 +20,7 @@
                      :redirect-on-auth? false
                      :login-failure-handler #'security/login-failure-handler)
                     signup-workflow]})
-      wrap-stateful-session
+      wrap-noir-session
       site))
 
 (defn start-server [port]
