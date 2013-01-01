@@ -1,6 +1,7 @@
 .classpath
 .project
 .settings
+.lein-cljsbuild*
 /bin
 /pom.xml
 *jar
