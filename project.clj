@@ -33,17 +33,17 @@
                    :plugins [[lein-midje "2.0.3"]
                              [lein-cljsbuild "0.2.10"]]
                    :hooks [leiningen.cljsbuild]
-                   :cljsbuild {:builds {:main {:source-path "src-cljs"
-                                               :compiler {:output-to "resources/public/js/librarian-cljs.js"
-                                                          :optimizations :simple
-                                                          :pretty-print true}
-                                               :jar true}
+                   :cljsbuild {:builds {:dev {:source-path "src-cljs"
+                                              :compiler {:output-to "resources/public/js/librarian-cljs.js"
+                                                         :optimizations :whitespace
+                                                         :pretty-print true}
+                                              :jar true}
+                                        ;; :prod TBD
                                         :test {:source-path "test-cljs"
                                                :compiler {:output-to "resources/public/tests/js/librarian-tests.js"
-                                                          :optimizations :simple
+                                                          :optimizations :whitespace
                                                           :pretty-print true
-                                                          :libs ["resources/public/js"]}
-                                               :jar true}}}
+                                                          :libs ["resources/public/js"]}}}}
                    :repl-options {:init-ns librarian-clojure.repl}}
              ;; FIXME deps copied from the dev profile
              :1.5 {:dependencies [[org.clojure/clojure       "1.5.0-master-SNAPSHOT"]
