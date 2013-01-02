@@ -41,7 +41,8 @@
                                         :test {:source-path "test-cljs"
                                                :compiler {:output-to "resources/public/tests/js/librarian-tests.js"
                                                           :optimizations :simple
-                                                          :pretty-print true}
+                                                          :pretty-print true
+                                                          :libs ["resources/public/js"]}
                                                :jar true}}}
                    :repl-options {:init-ns librarian-clojure.repl}}
              ;; FIXME deps copied from the dev profile
