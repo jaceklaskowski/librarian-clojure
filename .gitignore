@@ -1,6 +1,7 @@
 .classpath
 .project
 .settings
+.lein-cljsbuild*
 /bin
 /pom.xml
 *jar
@@ -13,5 +14,7 @@
 /multi-lib
 /data
 /target
+/resources/public/tests/js/librarian-tests.js
+/resources/public/js/librarian-cljs.js
 .lein-repl-history
 
