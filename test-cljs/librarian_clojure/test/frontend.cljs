@@ -1,10 +1,18 @@
 (ns librarian-clojure.test.frontend
-  (:require [librarian-clojure.frontend :as frontend]))
+  (:use [jayq.core :only [$]])
+  (:require [librarian-clojure.frontend :as frontend])
+  (:require-macros [librarian-clojure.test.macro-utils :as m]))
 
-(def deftest js/test)
+(defn jqdom [jqnode]
+  (.get jqnode 0))
 
-(deftest "adder makes 2 from 1 and 1"
-  (fn [] (js/ok (== (frontend/adder 1 1) 2) "Passed!")))
+(defn jqdom= [jqnode1 jqnode2]
+  (.isEqualNode (jqdom jqnode1) (jqdom jqnode2)))
 
-(deftest "(create-button) returns an empty button"
-  (fn [] (js/ok true)))
+(m/deftest "(create-button) returns an empty button"
+  (js/ok (jqdom= (frontend/create-button) ($ "<button>")), "Should return empty button"))
+
+(m/deftest "(create-button :class :foo) returns button with class foo"
+  (let [button (jqdom (frontend/create-button :button-class :foo))]
+    (js/ok (== button/tagName "BUTTON") "This is not a button!")
+    (js/ok (== button/className "foo") "Button does not have class foo!")))
