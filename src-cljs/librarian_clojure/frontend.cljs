@@ -6,5 +6,3 @@
 
 (defn adder [x y]
   (+ x y))
-
-(hello "Adrian")
