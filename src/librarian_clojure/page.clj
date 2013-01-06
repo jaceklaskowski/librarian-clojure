@@ -32,12 +32,12 @@
 (defn render-user [request]
   (index {:message "Enlive's here!"}))
 
+(html/deftemplate admin "public/admin.html"
+  [ctxt]
+  [:a#enlive-hello-admin] (html/content (get ctxt :hello-admin)))
+
 (defn render-admin [request]
-  (let [template (read-file "/public/admin.html")]
-    (-> template
-      (set-attr "lib-booklist"  (str "var books = " (-> (get-books) json/json-str)))
-      (set-attr "login-form" (greet-user (sec/get-user request)))
-      (set-attr "logout-form" (read-file "/public/logout-form.html")))))
+  (admin {:hello-admin (greet-user (sec/get-user request))}))
 
 (defn render-main [request]
   (if (-> request (sec/has-role? :admin))
