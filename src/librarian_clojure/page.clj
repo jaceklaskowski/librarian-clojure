@@ -1,36 +1,26 @@
 (ns librarian-clojure.page
-  (:use [librarian-clojure books])
-  (:require [clojure.string :as s]
-            [clojure.data.json :as json]
-            [librarian-clojure.security :as sec]
+  (:require [librarian-clojure.security :as sec]
             [net.cgrand.enlive-html :as html]))
 
-(defn read-file [path]
-  (slurp (.getResourceAsStream Object path)))
-
-(defn set-attr [template name value]
-  (s/replace template (re-pattern (str "\\#\\{" name "\\}")) value))
-
 (defn greet-user [{:keys [login]}]
-  (str "Hello, " login))
+  (when login
+    (str "Hello, " login)))
 
-(defn Xrender-user [request]
-  (let [template (read-file "/public/index.html")]
-    (set-attr template "lib-booklist"  (str "var books = " (-> (get-books) json/json-str)))
-    (if-let [user (sec/get-user request)]
-      (-> template
-        (set-attr "login-form" (greet-user user))
-        (set-attr "logout-form" (read-file "/public/logout-form.html")))
-      (-> template
-        (set-attr "login-form" (read-file "/public/login_form.chtml"))
-        (set-attr "logout-form" "")))))
+(def ^:private remove-element nil)
 
-(html/deftemplate index "public/index.html"
+(html/deftemplate index-for-user "public/index.html"
   [ctxt]
-  [:p#message] (html/content (get ctxt :message "Nothing to see here")))
+  [:a#enlive-hello-user] (html/content (get ctxt :hello-user ""))
+  [:ul#enlive-login-create-account-buttons] remove-element)
+
+(html/deftemplate index-for-public "public/index.html"
+  [ctxt]
+  [:ul#enlive-hello-user-area] remove-element)
 
 (defn render-user [request]
-  (index {:message "Enlive's here!"}))
+  (if-let [user (sec/get-user request)]
+    (index-for-user {:hello-user (greet-user user)})
+    (index-for-public {})))
 
 (html/deftemplate admin "public/admin.html"
   [ctxt]
