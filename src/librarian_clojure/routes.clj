@@ -1,9 +1,9 @@
 (ns librarian-clojure.routes
   "Provides routes for the web application"
-  (:use [compojure.core :only (GET POST PUT DELETE ANY defroutes)]
-        [compojure.route :only (resources not-found)]
-        [ring.util.response :only (redirect)])
-  (:require [clojure.data.json :as json]
+  (:require [compojure.core :refer (GET POST PUT DELETE ANY defroutes)]
+            [compojure.route :refer (resources not-found)]
+            [ring.util.response :refer (redirect)]
+            [clojure.data.json :as json]
             [librarian-clojure.security :as security]
             [librarian-clojure.page :as page]
             [librarian-clojure.books :as books]

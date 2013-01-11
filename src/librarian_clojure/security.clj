@@ -1,6 +1,6 @@
 (ns librarian-clojure.security
-  (:use [cemerick.friend.credentials :only (hash-bcrypt)])
-  (:require [librarian-clojure.db :as db]
+  (:require [cemerick.friend.credentials :refer (hash-bcrypt)]
+            [librarian-clojure.db :as db]
             [cemerick.friend :as friend]
             [clojure.data.json :as json]))
   

@@ -1,7 +1,7 @@
 (ns librarian-clojure.page
-  (:require (librarian-clojure [security :as sec]
-                               [books :as books]))
-  (:use [net.cgrand.enlive-html :as html :only (clone-for content nth-of-type)]))
+  (:require [librarian-clojure (security :as sec)
+                               (books :as books)]
+            [net.cgrand.enlive-html :refer (clone-for content nth-of-type) :as html]))
 
 (defn greet-user [{:keys [login]}]
   (when login

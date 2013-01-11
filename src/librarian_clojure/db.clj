@@ -1,7 +1,7 @@
 (ns librarian-clojure.db
   (:import [jBCrypt BCrypt])
-  (:use [librarian-clojure.config :only [*env* mongo-config]])
-  (:require [somnium.congomongo :as cm]))
+  (:require [librarian-clojure.config :refer (*env* mongo-config)]
+            [somnium.congomongo :as cm]))
 
 (defn init []
   (println "Environment:" *env*)

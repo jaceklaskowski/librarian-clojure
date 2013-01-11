@@ -1,7 +1,7 @@
 (ns librarian-clojure.friend
-  (:use [cemerick.friend.util :only (gets)])
   (:require [librarian-clojure.security :as security]
             [clojure.data.json :as json]
+            [cemerick.friend.util :refer (gets)]
             [cemerick.friend :as friend]
             [cemerick.friend [workflows :as workflows]
                              [credentials :as creds]]))

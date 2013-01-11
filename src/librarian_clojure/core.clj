@@ -1,11 +1,11 @@
 (ns librarian-clojure.core
-  (:use [librarian-clojure.routes :only (routes)]
-        [librarian-clojure.friend :only (custom-interactive-form
-                                         signup-workflow)]
-        [compojure.handler :only (site)]
-        [ring.adapter.jetty :only (run-jetty)]
-        [noir.session :only (wrap-noir-session)])
-  (:require [librarian-clojure.security :as security]
+  (:require [librarian-clojure.routes :refer (routes)]
+            [librarian-clojure.friend :refer (custom-interactive-form
+                                             signup-workflow)]
+            [compojure.handler :refer (site)]
+            [ring.adapter.jetty :refer (run-jetty)]
+            [noir.session :refer (wrap-noir-session)]
+            [librarian-clojure.security :as security]
             [cemerick.friend :as friend]
             [cemerick.friend [workflows :as workflows]
                              [credentials :as creds]]))

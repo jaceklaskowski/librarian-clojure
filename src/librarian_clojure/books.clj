@@ -1,5 +1,9 @@
 (ns librarian-clojure.books
-  (:use librarian-clojure.db))
+  (:require [librarian-clojure.db :refer (db-get-books 
+                                          db-add-book 
+                                          db-update-book 
+                                          db-get-book 
+                                          db-delete-book)]))
 
 (defn get-books []
   (db-get-books))

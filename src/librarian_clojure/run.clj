@@ -1,10 +1,10 @@
 (ns librarian-clojure.run
   "Bootstrap for 'lein run'"
-  (:use librarian-clojure.core
-        [clojure.java.browse :only (browse-url)]
-        [librarian-clojure.config :only [*env*]])
-  (:require [librarian-clojure.db :as db]
-            [librarian-clojure.security :as security]))
+  (:require  [librarian-clojure.core :refer (start-server)]
+             [clojure.java.browse :refer (browse-url)]
+             [librarian-clojure.config :refer [*env*]]
+             [librarian-clojure.db :as db]
+             [librarian-clojure.security :as security]))
 
 (defn- parse-port [[port] & args]
   (if-let [port-str (or port (get (System/getenv) "PORT"))]
