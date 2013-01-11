@@ -291,9 +291,6 @@ var Librarian = function() {
   }
 
   function initFront() {
-    loadBookList(function (key, val, row) {
-        appendBook(row, val);
-    });
     $('#btn-login').click(loginClicked);
     $('#btn-create-account').click(createAccountClicked);
     $('#btn-signin').click(signinClicked);
