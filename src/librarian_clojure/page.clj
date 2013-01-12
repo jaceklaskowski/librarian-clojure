@@ -13,6 +13,7 @@
   [{:keys [books] :as ctxt}]
   [:a#enlive-hello-user] (content (get ctxt :hello-user ""))
   [:ul#enlive-login-create-account-buttons] remove-element
+  [:div#enlive-hero-unit] remove-element
   [:.book-list :tr] (clone-for [{:keys [_id author title]} books]
                                [[:td (nth-of-type 1)]] (content (str _id))
                                [[:td (nth-of-type 2)]] (content author)
