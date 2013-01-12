@@ -26,7 +26,8 @@
              :production {:misc "configuration"
                           :main librarian-clojure.run/run-heroku
                           :mirrors {#"central|clojars"
-                                    "http://s3pository.herokuapp.com/clojure"}}
+                                    "http://s3pository.herokuapp.com/clojure"}
+                          :aot :all}
              :dev {:main librarian-clojure.run/run-local
                    :dependencies [[ring-mock                 "0.1.1" :exclusions [org.clojure/clojure
                                                                                   hiccup]]
@@ -34,7 +35,8 @@
                                   [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]
                    :plugins [[lein-midje "2.0.3"]]
                    :hooks [leiningen.cljsbuild]
-                   :repl-options {:init-ns librarian-clojure.repl}}
+                   :repl-options {:init-ns librarian-clojure.repl}
+                   :warn-on-reflection true}
              ;; FIXME deps copied from the dev profile
              :1.5 {:dependencies [[org.clojure/clojure       "1.5.0-master-SNAPSHOT"]
                                   [ring-mock                 "0.1.1" :exclusions [org.clojure/clojure
@@ -56,8 +58,6 @@
                                          :libs ["resources/public/js"]}}}}
   :aliases {"run-local" ["with-profile" "dev" "run"]
             "all" ["with-profile" "dev:1.5"]}
-  :aot :all
-  :warn-on-reflection true
   :repositories [["sonatype-snapshots"
                   "http://oss.sonatype.org/content/repositories/snapshots/"]
                  ["stuart" "http://stuartsierra.com/maven2"]
