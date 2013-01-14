@@ -8,6 +8,10 @@
 (defn get-books []
   (db-get-books))
 
+(defn get-book [id]
+  (let [id (Integer/parseInt id)]
+    (db-get-book id)))
+
 (defn add-book [author title]
   (db-add-book {:author author :title title}))
 

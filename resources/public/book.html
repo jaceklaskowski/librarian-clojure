@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Librarian (in Clojure) :: Book</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Book manager for Warszawa Java User Group in Clojure">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+  <style type="text/css">
+    body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+  </style>
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans:400,700">
+</head>
+
+<body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="/">Librarian-Clojure</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li class="active"><a href="https://github.com/jaceklaskowski/librarian-clojure">Project at GitHub</a></li>
+          </ul>
+          <div id="login-form-container" class="navbar-form pull-right active">
+            <ul id="enlive-hello-user-area" class="nav">
+              <li><a id="enlive-hello-user" class="active" href="#" /></li>
+              <li id="logout-form">
+                <button class="btn" id="btn-logout">
+                  <i class="icon-off"></i> Log Out
+                </button>
+              </li>
+            </ul>
+            <!-- Found at http://www.google.com/analytics/ -->
+            <ul id="enlive-login-create-account-buttons" class="nav">
+              <li><button class="btn" id="btn-login">Log in</button></li>
+              <li><a href="#">or</a></li>
+              <li><button class="btn" id="btn-create-account">Create account</button></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">    
+    <section id="main">
+      <div class="row">
+        <div class="span12">
+          <h1>{{title}} book page</h1>
+          <blockquote>
+            <p>The screen shows the book's details</p>
+            <small>The Helper</small>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+    <div id="login-form">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <input type="text" class="input-block-level" name="login" value="admin" placeholder="Email address" required>
+        <input type="password" class="input-block-level" name="password" value="admin" placeholder="Password" required>
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+        <button class="btn btn-large btn-primary" type="submit" id="btn-signin">Sign in</button>
+        <div class="errors alert alert-error"></div>
+      </form>
+    </div>
+    <div id="signup-form">
+      <form class="form-signin">
+        <h2 class="form-signin-heading">Create account</h2>
+        <input type="text" class="input-block-level" name="login" value="" placeholder="Email address">
+        <input type="password" class="input-block-level" name="password" value="" placeholder="Password">
+        <input type="password" class="input-block-level" name="password2" value="" placeholder="Password again">
+        <button class="btn btn-large btn-primary" type="submit" id="btn-signup">Sign up</button>
+        <div class="errors alert alert-error"></div>
+      </form>
+    </div>
+    <hr>
+    <footer>
+      <p>Copyright &copy; 2012, Konrad Garus, Jacek Laskowski, Adrian Gruntkowski</p>
+      <!-- https://github.com/markdotto/github-buttons/#readme -->
+      <iframe src="http://bit.ly/ghbtns-fork-count" allowtransparency="true" frameborder="0" scrolling="0" width="132px" height="20px"></iframe>
+      <div class="pull-right">
+        <a href="https://github.com/jaceklaskowski/librarian-clojure">Join the librarian-clojure project on GitHub</a>
+      </div>
+    </footer>
+  </div>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript" src="/ember-0.9.3.min.js"></script>
+  <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/js/buckwilson-Lightbox_me-8ff1a2b/jquery.lightbox_me.js"></script>
+  <script type="text/javascript" src="/js/librarian.js"></script>
+  <script type="text/javascript" src="/js/librarian-cljs.js"></script>
+  <script type="text/javascript">
+  <!--//
+    var librarian = new Librarian();
+    librarian.initFront();
+  //-->
+  </script>
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37256636-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
+</body>
+</html>
