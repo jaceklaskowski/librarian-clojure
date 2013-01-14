@@ -13,10 +13,10 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
   <style type="text/css">
-    body {
+  body {
     padding-top: 60px;
     padding-bottom: 40px;
-    }
+  }
   </style>
   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
   <!--[if lt IE 9]>
@@ -26,7 +26,7 @@
 </head>
 
 <body>
-  <div class="navbar navbar navbar-fixed-top">
+  <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -34,7 +34,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="#">Librarian-Clojure</a>
+        <a class="brand" href="/">Librarian-Clojure</a>
         <div class="nav-collapse collapse">
           <ul class="nav">
             <li class="active"><a href="https://github.com/jaceklaskowski/librarian-clojure">Project at GitHub</a></li>
@@ -89,11 +89,12 @@
               <tr>
                 <td>id</td>
                 <td>author</td>
-                <td>title</td>
+                <td><a href="/books/{{id}}">{{title}}</a></td>
                 <td>
                   <button class="btn btn-primary">
                     <i class="icon-star icon-white"></i> Review
                   </button>
+                  <span class="badge">1</span>
                 </td>
               </tr>
             </tbody>
@@ -110,7 +111,9 @@
           <input type="checkbox" value="remember-me"> Remember me
         </label>
         <button class="btn btn-large btn-primary" type="submit" id="btn-signin">Sign in</button>
-        <div class="errors alert alert-error"></div>
+        <div class="errors alert alert-error">
+          <a class="close" data-dismiss="alert">x</a>
+        </div>
       </form>
     </div>
     <div id="signup-form">
