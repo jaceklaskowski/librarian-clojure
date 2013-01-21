@@ -22,6 +22,8 @@ A browser window shows up with the welcome page of the application.
  3. In REPL, execute `(go)` to start a server and open the welcome page.
  4. To stop the server, execute `(stop)`.
 
+When you make changes to the templates, follow [Template out of date](https://github.com/swannodette/enlive-tutorial#template-out-of-date) and execute `(load "page")` at the REPL.
+
 ## How to contribute (test first, please)
 
  1. Open a terminal and fire up `lein midje --lazytest`
