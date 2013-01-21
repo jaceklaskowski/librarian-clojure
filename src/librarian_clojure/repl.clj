@@ -4,21 +4,16 @@
   users will land in when they start a Clojure REPL. It exists to
   provide convenience functions like 'go' and 'stop'."  
   (:require [clojure.java.browse :as browse]
-            [librarian-clojure.core :as core]))
+            [librarian-clojure.run :as run]))
 
 (def ^:dynamic ^org.eclipse.jetty.server.Server *server*)
 
 (defn go
-  "Start a browser-connected REPL and launch a browser to talk to it."
+  "Start a server and launch a browser to talk to it."
   []
-  (comment
-  (dev/run-server)
-  (future (Thread/sleep 3000)
-          (browse/browse-url "http://localhost:8080/development"))
-  (tools/cljs-repl))
-  ;;
-  (let [port (Integer/parseInt (-> (System/getenv) (get "PORT" "8080")))]
-    (alter-var-root #'*server* (fn [_] (core/start-server port)))
+  (let [port (-> (System/getenv) (get "PORT" "8080") Integer/parseInt)]
+    (run/init :local)
+    (alter-var-root #'*server* (fn [_] (run/start-server port)))
     (browse/browse-url (str "http://localhost:" port))))
 
 (defn stop

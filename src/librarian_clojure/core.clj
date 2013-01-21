@@ -3,7 +3,6 @@
             [librarian-clojure.friend :refer (custom-interactive-form
                                              signup-workflow)]
             [compojure.handler :refer (site)]
-            [ring.adapter.jetty :refer (run-jetty)]
             [noir.session :refer (wrap-noir-session)]
             [librarian-clojure.security :as security]
             [cemerick.friend :as friend]
@@ -22,6 +21,3 @@
                     signup-workflow]})
       wrap-noir-session
       site))
-
-(defn start-server [port]
-  (run-jetty #'app {:port port :join? false}))
