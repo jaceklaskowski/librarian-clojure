@@ -187,28 +187,8 @@ var Librarian = function() {
     row.append(buttons);
   }
 
-  function loginClicked() {
-    $('#login-form').lightbox_me({
-      centered: true, 
-      onLoad: function() { 
-        $('#login-form').find('input:first').focus();
-      }
-    });
-    return false;
-  }
-
-  function createAccountClicked() {
-    $('#signup-form').lightbox_me({
-      centered: true, 
-      onLoad: function() { 
-        $('#signup-form').find('input:first').focus();
-      }
-    });
-    return false;
-  }
-
   function signinClicked() {
-    var form = $("#login-form");
+    var form = $("#login-form-modal");
     $('div.errors', form).empty();
     var login = form.find('input[name="login"]').val().trim();
     var pw = form.find('input[name="password"]').val().trim();
@@ -230,7 +210,7 @@ var Librarian = function() {
   }
 
   function signupClicked() {
-    var form = $("#signup-form");
+    var form = $("#signup-form-modal");
     $('div.errors', form).empty();
     var login = form.find('input[name="login"]').val().trim();
     var pw = form.find('input[name="password"]').val().trim();
@@ -291,15 +271,17 @@ var Librarian = function() {
   }
 
   function initFront() {
-    $('#btn-login').click(loginClicked);
-    $('#btn-create-account').click(createAccountClicked);
     $('#btn-signin').click(signinClicked);
     $('#btn-signup').click(signupClicked);
     $('#btn-logout').click(logoutClicked);
     hideErrors();
-    
-    $('#login-form').hide();
-    $('#signup-form').hide();
+
+    $('#login-form-modal').on('shown', function () {
+      $('#login-form-modal').find('input:first').focus();
+    })
+    $('#signup-form-modal').on('shown', function () {
+      $('#signup-form-modal').find('input:first').focus();
+    })
   }
 
   function initAdmin() {
@@ -308,7 +290,7 @@ var Librarian = function() {
     });
     $('#btn-add-book').click(newBookClicked);
     $('#btn-logout').click(logoutClicked);
-    $('#login-form .alert').hide();
+    $('#login-form-modal .alert').hide();
   }
 
   return {

@@ -50,9 +50,9 @@
             </ul>
             <!-- Found at http://www.google.com/analytics/ -->
             <ul id="enlive-login-create-account-buttons" class="nav">
-              <li><button class="btn" id="btn-login">Log in</button></li>
+              <li><button class="btn" data-target="#login-form-modal" data-toggle="modal">Log in</button></li>
               <li><a href="#">or</a></li>
-              <li><button class="btn" id="btn-create-account">Create account</button></li>
+              <li><button class="btn" data-target="#signup-form-modal" data-toggle="modal">Create account</button>
             </ul>
           </div>
         </div>
@@ -102,7 +102,7 @@
         </div>
       </div>
     </section>
-    <div id="login-form">
+    <div id="login-form-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <form class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
         <input type="text" class="input-block-level" name="login" value="admin" placeholder="Email address" required>
@@ -116,7 +116,7 @@
         </div>
       </form>
     </div>
-    <div id="signup-form">
+    <div id="signup-form-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <form class="form-signin">
         <h2 class="form-signin-heading">Create account</h2>
         <input type="text" class="input-block-level" name="login" value="" placeholder="Email address">
@@ -140,7 +140,6 @@
   <script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
   <script type="text/javascript" src="/ember-0.9.3.min.js"></script>
   <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="/js/buckwilson-Lightbox_me-8ff1a2b/jquery.lightbox_me.js"></script>
   <script type="text/javascript" src="/js/librarian.js"></script>
   <script type="text/javascript" src="/js/librarian-cljs.js"></script>
   <script type="text/javascript">
