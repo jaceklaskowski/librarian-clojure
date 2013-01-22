@@ -16,7 +16,7 @@
                  [enlive                  "1.0.1" :exclusions [org.clojure/clojure]]
                  [jayq                    "2.0.0" :exclusions [org.clojure/clojure]]
                  [org.clojure/clojure     "1.4.0"]]
-  :plugins [[lein-cljsbuild "0.2.10"]]
+  :plugins [[lein-cljsbuild "0.3.0"]]
   :hooks [leiningen.cljsbuild]
   :repl-init librarian-clojure.repl
   :ring {:handler librarian-clojure.core/app
@@ -45,17 +45,20 @@
                                    :exclusions [org.clojure/clojure]]
                                   [com.stuartsierra/lazytest "1.2.3" :exclusions [org.clojure/clojure]]]
                    :plugins [[lein-midje "2.0.3"]]}}
-  :cljsbuild {:builds {:dev {:source-path "src-cljs"
-                             :compiler {:output-to "resources/public/js/librarian-cljs.js"
-                                        :optimizations :whitespace
-                                        :pretty-print true}
-                             :jar true}
-                       ;; :production TBD
-                       :test {:source-path "test-cljs"
-                              :compiler {:output-to "resources/public/tests/js/librarian-tests.js"
-                                         :optimizations :whitespace
-                                         :pretty-print true
-                                         :libs ["resources/public/js"]}}}}
+  :cljsbuild {:builds
+              [{:source-paths ["src-cljs"]
+                :id "dev"
+                :compiler {:pretty-print true
+                           :output-to "resources/public/js/librarian-cljs.js"
+                           :optimizations :whitespace}
+                :jar true}
+               ;; :id "production" TBD
+               {:source-paths ["test-cljs"]
+                :id "test"
+                :compiler {:pretty-print true
+                           :output-to "resources/public/tests/js/librarian-tests.js"
+                           :libs ["resources/public/js"]
+                           :optimizations :whitespace}}]}
   :aliases {"run-local" ["with-profile" "dev" "run"]
             "all" ["with-profile" "dev:1.5"]}
   :repositories [["sonatype-snapshots"
