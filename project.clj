@@ -53,11 +53,10 @@
                            :optimizations :whitespace}
                 :jar true}
                ;; :id "production" TBD
-               {:source-paths ["test-cljs"]
+               {:source-paths ["src-cljs" "test-cljs"]
                 :id "test"
                 :compiler {:pretty-print true
                            :output-to "resources/public/tests/js/librarian-tests.js"
-                           :libs ["resources/public/js"]
                            :optimizations :whitespace}}]}
   :aliases {"run-local" ["with-profile" "dev" "run"]
             "all" ["with-profile" "dev:1.5"]}
