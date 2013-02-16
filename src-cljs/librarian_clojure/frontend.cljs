@@ -4,9 +4,15 @@
   (:require [jayq.core :as jq]
             [clojure.string :as str]))
 
+(defn json->book [json]
+  {:_id json/_id
+   :author json/author
+   :title json/title})
+
 (defn create-button
   [& {:keys [button-class icon caption callback]}]
   (let [button ($ "<button>")]
+    (jq/add-class button "btn")
     (when button-class 
       (jq/add-class button (name button-class)))
     (when icon
@@ -74,22 +80,24 @@
   (jq/ajax "/books"
            {:type "PUT"
             :dataType :json
+            :data book
             :success (fn [book]
                        (jq/empty row)
-                       (append-book row book))}))
+                       (append-book-admin row (json->book book)))}))
 
 (defn perform-update
-  [row]
-  (jq/ajax "/books"
-           {:type "PUT"
+  [book row]
+  (jq/ajax (str "/books/" (:_id book))
+           {:type "POST"
             :dataType :json
+            :data book
             :success (fn [book]
                        (jq/empty row)
-                       (append-book row book))}))
+                       (append-book-admin row (json->book book)))}))
 
 (defn update-book [row]
   (let [book (get-edited-book row)]
-    (if (validate-book book)
+    (when (validate-book book)
       (-> row (jq/find "input") (jq/attr "disabled" true))
       (-> row (jq/find "button") (jq/attr "disabled" true))
       (if (existing-book? row)
@@ -102,7 +110,8 @@
                 :author (jq/attr row "data-author")
                 :title (jq/attr row "data-title")}]
       (jq/empty row)
-      (append-book-admin row book))))
+      (append-book-admin row book))
+    (jq/remove row)))
 
 (defn edit-book [row]
   (jq/empty row)
@@ -127,7 +136,7 @@
                     (jq/append save-button)
                     (jq/append " ")
                     (jq/append cancel-button))]
-    (-> row (jq/append buttons) (jq/find "input:first") jq/focus)))
+    (-> row (jq/append buttons) (jq/find "input:first") (jq/trigger :focus))))
 
 (defn new-book-clicked []
   (let [row ($ "<tr>")]
@@ -165,3 +174,87 @@
                     (jq/append delete-button))]
     (jq/append row buttons)))
 
+(defn field-value-by-name [form field-name]
+  (-> form (jq/find (str "input[name=\"" field-name "\"]")) jq/val str/trim))
+
+(defn perform-creds-general [url form error-list login password]
+  (jq/ajax url
+           {:type "POST"
+            :dataType :json
+            :data {:login login :password password}
+            :success (fn [data]
+                       (if data/successful
+                         (.reload js/location)
+                         (-> error-list 
+                             jq/empty jq/show 
+                             (jq/append data/errorDetail))))}))
+
+(defn perform-login [form error-list login password]
+  (perform-creds-general "/login" form error-list login password))
+
+(defn perform-signup [form error-list login password]
+  (perform-creds-general "/signup" form error-list login password))
+
+(defn signin-clicked []
+  (let [form ($ "#login-form-modal")
+        error-list ($ "div.errors" form)
+        login (field-value-by-name form "login")
+        password (field-value-by-name form "password")]
+    (jq/empty error-list)
+    (perform-login form error-list login password)
+    false))
+
+(defn signup-clicked []
+  (let [form ($ "#signup-form-modal")
+        error-list ($ "div.errors" form)
+        login (field-value-by-name form "login")
+        password (field-value-by-name form "password")
+        password2 (field-value-by-name form "password2")]
+    (jq/empty error-list)
+    (cond (or (str/blank? login) (str/blank? password))
+          (js/alert "Please provide username and password")
+          (not= password password2)
+          (js/alert "Please type in the same password in both fields")
+          :else
+          (perform-signup form error-list login password))
+    false))
+
+(defn logout-clicked []
+  (jq/ajax "/logout"
+           {:type "POST"
+            :dataType :json
+            :success (fn [data]
+                         (.reload js/location))}))
+
+(defn hide-errors []
+  (-> "#login-form-container .alert-error" $ jq/remove))
+
+(defn show-error [form message]
+  (hide-errors)
+  (-> "<div />" $ (jq/add-class "alert alert-error") (jq/html message) (jq/insert-after form)))
+
+(defn load-book-list [populate-row-fn]
+  (.getJSON js/jQuery 
+            "/books" 
+            (fn [json]
+              (let [book-table ($ ".book-list")]
+                (doseq [book json]
+                  (let [row ($ "<tr>")]
+                    (populate-row-fn (json->book book) row)
+                    (jq/append book-table row)))))))
+
+(defn ^:export init-front []
+  (jq/on ($ "#btn-signin") :click signin-clicked)
+  (jq/on ($ "#btn-signup") :click signup-clicked)
+  (jq/on ($ "#btn-logout") :click logout-clicked)
+  (jq/on ($ "#login-form-modal") 
+         :shown (fn [] (-> "#login-form-modal" $ (jq/find "input:first") (jq/trigger :focus))))
+  (jq/on ($ "#signup-form-modal") 
+         :shown (fn [] (-> "#signup-form-modal" $ (jq/find "input:first") (jq/trigger :focus))))
+  (hide-errors))
+
+(defn ^:export init-admin []
+  (load-book-list (fn [val row] (append-book-admin row val)))
+  (jq/on ($ "#btn-add-book") :click new-book-clicked)
+  (jq/on ($ "#btn-logout") :click logout-clicked)
+  (-> "#login-form-modal .alert" $ jq/hide))
