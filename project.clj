@@ -11,7 +11,7 @@
                  [congomongo              "0.3.3" :exclusions [org.clojure/clojure]]
                  [org.clojure/data.json   "0.2.1" :exclusions [org.clojure/clojure]]
                  [jbcrypt                 "0.3"   :exclusions [org.clojure/clojure]]
-                 [com.cemerick/friend     "0.1.2" :exclusions [org.clojure/clojure]]
+                 [com.cemerick/friend     "0.1.3" :exclusions [org.clojure/clojure]]
                  [lib-noir                "0.3.1" :exclusions [org.clojure/clojure]]
                  [enlive                  "1.0.1" :exclusions [org.clojure/clojure]]
                  [jayq                    "2.0.0" :exclusions [org.clojure/clojure]]
